@@ -24,9 +24,17 @@ class Atelier
     #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'ateliers')]
     private Collection $idThemes;
 
+    #[ORM\ManyToMany(targetEntity: Inscription::class, mappedBy: 'ateliers')]
+    private ?Collection $inscriptions;
+
+    #[ORM\OneToMany(targetEntity: Vacation::class, mappedBy: 'atelier')]
+    private Collection $vacations;
+
     public function __construct()
     {
         $this->idThemes = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
+        $this->vacations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,4 +89,62 @@ class Atelier
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Inscription>
+     */
+    public function getInscriptions(): Collection
+    {
+        return $this->inscriptions;
+    }
+
+    public function addInscription(Inscription $inscription): static
+    {
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions->add($inscription);
+            $inscription->addAtelier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): static
+    {
+        if ($this->inscriptions->removeElement($inscription)) {
+            $inscription->removeAtelier($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Vacation>
+     */
+    public function getVacations(): Collection
+    {
+        return $this->vacations;
+    }
+
+    public function addVacation(Vacation $vacation): static
+    {
+        if (!$this->vacations->contains($vacation)) {
+            $this->vacations->add($vacation);
+            $vacation->setAtelier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVacation(Vacation $vacation): static
+    {
+        if ($this->vacations->removeElement($vacation)) {
+            // set the owning side to null (unless already changed)
+            if ($vacation->getAtelier() === $this) {
+                $vacation->setAtelier(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
