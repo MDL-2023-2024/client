@@ -23,9 +23,12 @@
 		<div class="d-flex flex-column vh-100 ">
 			{% include "elements/header.html.twig" %}
 
-			{% block body %}{% endblock %}
-
-			{% include "elements/footer.html.twig" %}
-		</div>
-	</body>
-</html>
+			<div class="flex-grow-1">
+				<div class="d-flex"> {% block body %}{% endblock %}
+					</div>
+				</div>
+				{% include "elements/footer.html.twig" %}
+			</div>
+		</body>
+	</html>
+</body></body></html>
