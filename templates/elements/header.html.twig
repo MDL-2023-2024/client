@@ -1,33 +1,28 @@
 {% block header %}
 	<header>
-		<nav>
-			{# <ul>
-						                <li><img src="{{ asset('img/mdl_logo.png') }}" alt="Image de l'association" style="width: 100px;"></li>
-										<li><a href="/">Accueil</a></li>
-										<li><a href="#">Programme</a></li>
-										<li><a href="#">Inscription</a></li>
-										<li><a href="#">Contact</a></li>
-									</ul>
-								</nav> #}
-			<nav class="navbar navbar-expand-lg " style="background-color: #003e97;" data-bs-theme="dark">
-				<img src="{{ asset('img/mdl_logo.png') }}" alt="Image de l'association" width="100" >
-                <div class="container-fluid">
-					<a class="navbar-brand" href="#">Maison des ligues</a>
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<div class="collapse navbar-collapse" id="navbarText">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="#">Accueil</a>
-							</li>
-						</ul>
-					</div>
-					<div class="d-flex">
-						<a class="nav-link" aria-current="page" href="#"><button class="btn btn-primary" type="submit">Connexion</button><a>
-						<a class="nav-link ms-1" aria-current="page" href="#"><button class="btn btn-primary" type="submit">S'inscrire</button><a>
-					</div>
+		<nav class="navbar navbar-expand-lg " style="background-color: #003e97;" data-bs-theme="dark">
+			<img src="{{ asset('img/mdl_logo.png') }}" alt="Image de l'association" width="100">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#">Maison des ligues</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarText">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#">Accueil</a>
+						</li>
+					</ul>
 				</div>
-			</nav>
-		</header>
-	{% endblock %}
+				<div class="d-flex">
+					<a class="nav-link" aria-current="page" href="#">
+						<button class="btn btn-primary" type="submit">Connexion</button>
+					</a>
+					<a class="nav-link ms-1" aria-current="page" href="#">
+						<button class="btn btn-primary" type="submit">S'inscrire</button>
+					</a>
+				</div>
+			</div>
+		</nav>
+	</header>
+{% endblock %}
