@@ -16,7 +16,7 @@ class Proposer
     #[ORM\Column(nullable: true)]
     private ?float $tarifNuite = null;
 
-    #[ORM\ManyToOne(inversedBy: 'proposers')]
+    #[ORM\ManyToOne(inversedBy: 'tarifs')]
     private ?Hotel $hotel = null;
 
     #[ORM\ManyToOne(inversedBy: 'tarifs')]

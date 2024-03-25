@@ -1,0 +1,33 @@
+<div class="col">
+	<h2 class="text-decoration-underline">{{hotel.pnom}}</h2>
+	<p class="list-group-item">
+		<span class="fw-bold text-decoration-underline">Adresse :</span>
+		{{hotel.adresse1}},
+		{{hotel.cp}}
+		{{hotel.ville}}
+	</p>
+	<p class="list-group-item">
+		<span class="fw-bold text-decoration-underline">Téléphone :</span>
+		{{hotel.tel}}
+	</p>
+	<a href="https://all.accor.com/ssr/app/accor/rates/1384/index.fr.shtml?dateIn=2023-09-08&nights=2&compositions=1&stayplus=false&snu=false&accessibleRooms=false&destination=">
+		<button class="btn btn-secondary">
+			Site internet
+		</button>
+	</a>
+	<section class="container text-center">
+		<h2>Tarif négociés  par nuit:</h2>
+		<div class="row align-items-start justify-content-center">
+			{% for tarif in hotel.proposers %}
+				<div class=" mx-1 col-3 border-black border-bottom border-3 rounded-top bg-primary bg-gradient text-white pt-3">
+					<div class="box-price">
+						<h5>Chambre
+							{{tarif.categorie.libelleCategorie}}</h5>
+						<p class="fs-4">{{tarif.tarifNuite}}<span class="fs-5">€</span>
+						</p>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</section>
+</div>
