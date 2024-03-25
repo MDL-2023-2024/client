@@ -35,9 +35,9 @@ INSERT INTO categorie_chambre (id, libelle_categorie) VALUES
 (2, 'Double');
 
 -- Insertion dans la table 'hotel'
-INSERT INTO hotel (pnom, adresse1, adresse2, cp, ville, tel, mail) VALUES 
-('Ibis Styles Lille Centre Gare Beffroi', '172 rue Pierre Mauroy', null, '59000', 'Lille', '0320300054', 'H1384@accor.com'),
-('Ibis budget Lile Centre', '10 Rue de Courtrai', null, '59000', 'Lille', '0892683078', 'H5208@accor.com');
+INSERT INTO hotel (pnom, adresse1, adresse2, cp, ville, tel, mail, website) VALUES 
+('Ibis Styles Lille Centre Gare Beffroi', '172 rue Pierre Mauroy', null, '59000', 'Lille', '03 20 30 00 54', 'H1384@accor.com', 'https://all.accor.com/ssr/app/accor/rates/1384/index.fr.shtml?dateIn=2023-09-08&nights=2&compositions=1&stayplus=false&snu=false&accessibleRooms=false&destinati'),
+('Ibis budget Lile Centre', '10 Rue de Courtrai', null, '59000', 'Lille', '08 92 68 30 78', 'H5208@accor.com', 'https://all.accor.com/ssr/app/ibis/rates/5208/index.fr.shtml?dateIn=2023-09-08&nights=2&compositions=1&stayplus=false&snu=false&accessibleRooms=false');
 
 -- Insertion dans la table 'proposer'
 INSERT INTO proposer (hotel_id, categorie_id, tarif_nuite) VALUES 
