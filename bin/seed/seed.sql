@@ -31,7 +31,7 @@ INSERT INTO atelier (libelle, nb_places_maxi) VALUES
 ('Atelier Histoire', 10);
 
 INSERT INTO categorie_chambre (id, libelle_categorie) VALUES 
-(1, 'Single'), 
+(1, 'Simple'), 
 (2, 'Double');
 
 -- Insertion dans la table 'hotel'
