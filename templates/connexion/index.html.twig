@@ -11,14 +11,18 @@
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title text-center">Connexion</h5>
-						<form method="post" action="">
+						{% if error %}
+							<div class="alert alert-danger w-100">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+						{% endif %}
+						<form method="post">
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 							<div class="mb-3">
 								<label for="username" class="form-label">Nom d'utilisateur</label>
-								<input type="text" class="form-control" id="username" name="_username" required>
+								<input type="email" value="{{ last_username }}" class="form-control" id="username" name="_username" autocomplete="email" required autofocus>
 							</div>
 							<div class="mb-3">
 								<label for="password" class="form-label">Mot de passe</label>
-								<input type="password" class="form-control" id="password" name="_password" required>
+								<input type="password" class="form-control" id="password" name="_password" autocomplete="current-password" required>
 							</div>
 							<div class="mb-3 form-check">
 								<input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
