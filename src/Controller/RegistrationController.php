@@ -8,6 +8,7 @@ use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -40,8 +41,10 @@ class RegistrationController extends AbstractController
             $resultat = json_decode(file_get_contents($url), true);
 
             if ($resultat['hydra:totalItems'] == 0 || $resultat['hydra:totalItems'] > 1) {
-                $this->addFlash('error', 'Le numéro de licence est incorrect');
-                return $this->redirectToRoute('app_register');
+                $form->get('numlicence')->addError(new FormError('Le numéro de licence est incorrect'));
+                return $this->render('connexion/register.html.twig', [
+                    'registrationForm' => $form->createView(),
+                ]);
             }
 
             // encode the plain password
