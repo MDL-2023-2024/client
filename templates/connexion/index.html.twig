@@ -17,7 +17,7 @@
 						<form method="post">
 							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 							<div class="mb-3">
-								<label for="username" class="form-label">Nom d'utilisateur</label>
+								<label for="username" class="form-label">E-mail</label>
 								<input type="email" value="{{ last_username }}" class="form-control" id="username" name="_username" autocomplete="email" required autofocus>
 							</div>
 							<div class="mb-3">
