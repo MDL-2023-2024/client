@@ -34,17 +34,22 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Requête l'api afin de vérifier le N° de licence
+            //Fetch user with licencies number doctrine
             $licence = $form->get('numlicence')->getData();
+            $userExist = $entityManager->getRepository(Compte::class)->findOneBy(['numlicence' => $licence]);
+            if ($userExist) {
+                return $this->redirectToRoute('app_login');
+            }
+
+            // Requête l'api afin de vérifier le N° de licence
             $url = "http://".$_SERVER['SERVER_NAME']."/api/licencies?page=1&numLicence=".$licence;
             // Recupere la reponse json 
             $resultat = json_decode(file_get_contents($url), true);
 
             if ($resultat['hydra:totalItems'] == 0 || $resultat['hydra:totalItems'] > 1) {
-                $form->get('numlicence')->addError(new FormError('Le numéro de licence est incorrect'));
-                return $this->render('connexion/register.html.twig', [
-                    'registrationForm' => $form->createView(),
-                ]);
+                //flash error message 
+                $this->addFlash('error', 'Numéro de licence invalide');
+                return $this->redirectToRoute('acceuil');
             }
 
             // encode the plain password
