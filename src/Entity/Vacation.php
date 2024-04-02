@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\VacationRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,6 +19,7 @@ class Vacation
     private ?\DateTimeInterface $dateheureDebut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: 'dateheureDebut')]
     private ?\DateTimeInterface $dateheureFin = null;
 
     #[ORM\ManyToOne(inversedBy: 'vacations')]
