@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/form.js') }}"></script>
+	<script src="{{ asset('js/form.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -17,9 +17,12 @@
 						{% include "gestion_congre/menu.html.twig"|upper %}
 					</div>
 					<div class="col-md-6" id="list-menu">
+						{% for flash in app.flashes('success') %}
+							<div class="alert alert-success w-100">{{ flash }}</div>
+						{% endfor %}
 						{% include "gestion_congre/atelierForm.html.twig" %}
-                        {% include "gestion_congre/themeForm.html.twig" %}
-                        {% include "gestion_congre/vacationForm.html.twig" %}
+						{% include "gestion_congre/themeForm.html.twig" %}
+						{% include "gestion_congre/vacationForm.html.twig" %}
 					</div>
 				</div>
 			</div>
