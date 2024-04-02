@@ -31,7 +31,7 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $numlicence = null;
 
     #[ORM\OneToMany(targetEntity: Inscription::class, mappedBy: 'compte')]

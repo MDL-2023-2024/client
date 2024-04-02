@@ -1,23 +1,20 @@
 <?php
 
 namespace App\Form;
-use App\Entity\Compte;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class ChangePasswordFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'options' => [
@@ -37,7 +34,7 @@ class RegistrationFormType extends AbstractType
                             'max' => 4096,
                         ]),
                     ],
-                    'label' => 'Mot de passe',
+                    'label' => 'Nouveau mot de passe',
                 ],
                 'second_options' => [
                     'label' => 'Confirmer le mot de passe',
@@ -47,20 +44,11 @@ class RegistrationFormType extends AbstractType
                 // this is read and encoded in the controller
                 'mapped' => false,
             ])
-            ->add('numlicence', TextType::class, [
-                'label' => 'N° de licence',
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Entrez votre numéro de licence...',
-                ],
-            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Compte::class,
-        ]);
+        $resolver->setDefaults([]);
     }
 }

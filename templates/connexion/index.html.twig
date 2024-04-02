@@ -6,7 +6,9 @@
 {% block form %}
 
 	<h1 class="card-title text-center">Connexion</h1>
-    <p class="text-center">Vous n'avez pas de compte ? <a href="{{ path('app_register') }}">Inscrivez-vous</a></p>
+	<p class="text-center">Vous n'avez pas de compte ?
+		<a href="{{ path('app_register') }}">Inscrivez-vous</a>
+	</p>
 	{% if error %}
 		<div class="alert alert-danger w-100">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 	{% endif %}
@@ -19,6 +21,7 @@
 		<div class="mb-3">
 			<label for="password" class="form-label">Mot de passe</label>
 			<input type="password" class="form-control" id="password" name="_password" autocomplete="current-password" required>
+            <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
 		</div>
 		<div class="mb-3 form-check">
 			<input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
@@ -26,5 +29,5 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Se connecter</button>
 	</form>
-    {{parent()}}
+	{{parent()}}
 {% endblock %}
