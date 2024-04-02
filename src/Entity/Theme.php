@@ -18,7 +18,7 @@ class Theme
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
-    #[ORM\ManyToMany(targetEntity: Atelier::class, mappedBy: 'idThemes')]
+    #[ORM\ManyToMany(targetEntity: Atelier::class, inversedBy: 'idThemes')]
     private Collection $ateliers;
 
     public function __construct()

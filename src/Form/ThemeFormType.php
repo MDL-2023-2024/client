@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Atelier;
 use App\Entity\Theme;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +16,15 @@ class ThemeFormType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('ateliers')
+            ->add('ateliers', EntityType::class, [
+                'class' => Atelier::class,
+                'choice_label' => 'libelle',
+                'multiple' => true,
+                'expanded' => true,
+            ])
+            ->add('enregistrer', SubmitType::class, [
+                'attr' => ['class' => 'btn-primary'],
+            ])
         ;
     }
 
