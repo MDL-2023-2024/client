@@ -1,38 +1,33 @@
-{% extends 'base.html.twig' %}
+{% extends "connexion/base.html.twig" %}
 
 {% block title %}Hello ConnexionController!
 {% endblock %}
 
-{% block body %}
+{% block form %}
 
-	<div class="container flex-grow-1">
-		<div class="row justify-content-center align-items-center h-100">
-			<div class="col-md-6">
-				<div class="card">
-					<div class="card-body">
-						<h5 class="card-title text-center">Connexion</h5>
-						{% if error %}
-							<div class="alert alert-danger w-100">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-						{% endif %}
-						<form method="post">
-							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-							<div class="mb-3">
-								<label for="username" class="form-label">Nom d'utilisateur</label>
-								<input type="email" value="{{ last_username }}" class="form-control" id="username" name="_username" autocomplete="email" required autofocus>
-							</div>
-							<div class="mb-3">
-								<label for="password" class="form-label">Mot de passe</label>
-								<input type="password" class="form-control" id="password" name="_password" autocomplete="current-password" required>
-							</div>
-							<div class="mb-3 form-check">
-								<input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
-								<label class="form-check-label" for="remember_me">Se souvenir de moi</label>
-							</div>
-							<button type="submit" class="btn btn-primary">Se connecter</button>
-						</form>
-					</div>
-				</div>
-			</div>
+	<h1 class="card-title text-center">Connexion</h1>
+	<p class="text-center">Vous n'avez pas de compte ?
+		<a href="{{ path('app_register') }}">Inscrivez-vous</a>
+	</p>
+	{% if error %}
+		<div class="alert alert-danger w-100">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	{% endif %}
+	<form method="post">
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+		<div class="mb-3">
+			<label for="username" class="form-label">E-mail</label>
+			<input type="email" value="{{ last_username }}" class="form-control" id="username" name="_username" autocomplete="email" required autofocus>
 		</div>
-	</div>
+		<div class="mb-3">
+			<label for="password" class="form-label">Mot de passe</label>
+			<input type="password" class="form-control" id="password" name="_password" autocomplete="current-password" required>
+            <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+		</div>
+		<div class="mb-3 form-check">
+			<input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
+			<label class="form-check-label" for="remember_me">Se souvenir de moi</label>
+		</div>
+		<button type="submit" class="btn btn-primary">Se connecter</button>
+	</form>
+	{{parent()}}
 {% endblock %}

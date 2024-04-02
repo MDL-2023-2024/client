@@ -10,3 +10,4 @@
 ###< symfony/framework-bundle ###
 /nbproject/private/
 /public/api/*
+.vscode/*
