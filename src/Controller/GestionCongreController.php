@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Atelier;
-use App\Form\AteliersType;
+use App\Form\AteliersFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ class GestionCongreController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $atelier = new Atelier();
-        $formAtelier = $this->createForm(AteliersType::class, $atelier);
+        $formAtelier = $this->createForm(AteliersFormType::class, $atelier);
         $formAtelier->handleRequest($request);
         return $this->render('gestion_congre/index.html.twig', [
             'atelierForm' => $formAtelier->createView(),
