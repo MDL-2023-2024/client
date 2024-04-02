@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240325085734 extends AbstractMigration
+final class Version20240401132206 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20240325085734 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE hotel ADD website VARCHAR(1000) DEFAULT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_CFF652605DB85673 ON compte (numlicence)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE hotel DROP website');
+        $this->addSql('DROP INDEX UNIQ_CFF652605DB85673 ON compte');
     }
 }

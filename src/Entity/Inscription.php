@@ -22,15 +22,15 @@ class Inscription
     #[ORM\ManyToMany(targetEntity: Atelier::class, inversedBy: 'inscriptions')]
     private ?Collection $ateliers;
 
-    #[ORM\ManyToOne(inversedBy: 'inscription')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Compte $compte = null;
-
     #[ORM\ManyToMany(targetEntity: Restauration::class, inversedBy: 'inscriptions')]
     private ?Collection $restaurations;
 
     #[ORM\OneToMany(targetEntity: Nuite::class, mappedBy: 'inscription')]
     private ?Collection $nuites;
+
+    #[ORM\ManyToOne(inversedBy: 'inscription')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Compte $compte = null;
 
     public function __construct()
     {
@@ -76,18 +76,6 @@ class Inscription
     public function removeAtelier(Atelier $atelier): static
     {
         $this->ateliers->removeElement($atelier);
-
-        return $this;
-    }
-
-    public function getCompte(): ?Compte
-    {
-        return $this->compte;
-    }
-
-    public function setCompte(?Compte $compte): static
-    {
-        $this->compte = $compte;
 
         return $this;
     }
@@ -142,6 +130,18 @@ class Inscription
                 $nuite->setInscription(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCompte(): ?Compte
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?Compte $compte): static
+    {
+        $this->compte = $compte;
 
         return $this;
     }
