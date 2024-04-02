@@ -17,9 +17,18 @@
 						{% include "gestion_congre/menu.html.twig"|upper %}
 					</div>
 					<div class="col-md-6" id="list-menu">
-						{% for flash in app.flashes('success') %}
-							<div class="alert alert-success w-100" id="notif-info">{{ flash }}</div>
-						{% endfor %}
+						<div id="notif-info">
+							{% for flash in app.flashes('success') %}
+								<div class="alert alert-success w-100" id="notif-info">{{ flash }}</div>
+							{% endfor %}
+							{% if errors is defined and errors|length > 0 %}
+								<div class="alert alert-danger">
+									{% for error in errors %}
+										<p>{{ error }}</p>
+									{% endfor %}
+								</div>
+							{% endif %}
+						</div>
 						{% include "gestion_congre/atelierForm.html.twig" %}
 						{% include "gestion_congre/themeForm.html.twig" %}
 						{% include "gestion_congre/vacationForm.html.twig" %}

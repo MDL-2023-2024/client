@@ -10,8 +10,14 @@ use App\Form\ThemeFormType;
 use App\Form\VacationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Error;
+use Exception;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormErrorIterator;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +30,7 @@ class GestionCongreController extends AbstractController
         $entityManager = $doctrine->getManager();
         $atelier = new Atelier();
         $atelierList = $entityManager->getRepository(Atelier::class)->findAll();
-        
+
         if ($atelierList != null) {
             $theme = new Theme();
             $vacation = new Vacation();
@@ -58,10 +64,30 @@ class GestionCongreController extends AbstractController
             $this->addFlash('success', 'Atelier ajouté avec succès !');
             return $this->redirectToRoute('gestion_congre');
         }
+
+        $errors = [];
+        $errors += $this->getErrors($formAtelier->getErrors(true));
+        $errors += $this->getErrors($formTheme->getErrors(true));
+        $errors += $this->getErrors($formVacation->getErrors(true));
+
         return $this->render('gestion_congre/index.html.twig', [
             'atelierForm' => $formAtelier->createView(),
             'themeForm' => isset($formTheme) ? $formTheme->createView() : null,
             'vacationForm' => isset($formVacation) ? $formVacation->createView() : null,
+            'errors' => $errors,
         ]);
+    }
+
+    private function getErrors($formError)
+    {
+        $errors = [];
+        if ($formError instanceof FormError) {
+            $errors[] = $formError->getMessage();
+        } elseif ($formError instanceof FormErrorIterator) {
+            foreach ($formError as $error) {
+                $errors[] = $error->getMessage();
+            }
+        }
+        return $errors;
     }
 }
