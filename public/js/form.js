@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	menus.forEach(function (menu) {
 		menu.addEventListener("change", function () {
 			const selectedMenuId = this.id;
-            console.log(selectedMenuId);
 			document.querySelectorAll(".form-of-menu").forEach(function (form) {
 				if (form.getAttribute("form-for") === selectedMenuId) {
 					form.classList.add("d-block");
@@ -14,6 +13,11 @@ document.addEventListener("DOMContentLoaded", function () {
 					form.classList.remove("d-block");
 				}
 			});
+            try {
+                document.querySelector('#notif-info').classList.add('d-none');
+            } catch (error) {
+                null;
+            }
 		});
 	});
 });
