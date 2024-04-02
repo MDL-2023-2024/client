@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Error;
 use Exception;
 use phpDocumentor\Reflection\PseudoTypes\False_;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Symfony\Component\Form\FormError;
@@ -22,8 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[IsGranted("ROLE_USER")]
 class GestionCongreController extends AbstractController
-{
+{   
     #[Route('/gestionCongre', name: 'gestion_congre')]
     public function index(Request $request, ManagerRegistry $doctrine): Response
     {
