@@ -1,6 +1,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 
-TRUNCATE TABLE atelier_theme;
+TRUNCATE TABLE theme_atelier;
 TRUNCATE TABLE vacation;
 TRUNCATE TABLE proposer;
 TRUNCATE TABLE nuite;
@@ -47,7 +47,7 @@ INSERT INTO proposer (hotel_id, categorie_id, tarif_nuite) VALUES
 (1, 2, 105.0);
 
 -- Insérer dans `atelier_theme`
-INSERT INTO atelier_theme (atelier_id, theme_id) VALUES 
+INSERT INTO theme_atelier (atelier_id, theme_id) VALUES 
 (1, 1), -- Lier 'Atelier Découverte' à 'Escrime Classique'
 (1, 2), -- Lier 'Atelier Découverte' à 'Escrime Moderne'
 (2, 1), -- Lier 'Atelier Avancé' à 'Escrime Classique'

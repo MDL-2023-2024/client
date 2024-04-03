@@ -21,7 +21,7 @@ class Atelier
     #[ORM\Column]
     private ?int $nbPlacesMaxi = null;
 
-    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'ateliers')]
+    #[ORM\ManyToMany(targetEntity: Theme::class, mappedBy: 'ateliers')]
     private Collection $idThemes;
 
     #[ORM\ManyToMany(targetEntity: Inscription::class, mappedBy: 'ateliers')]
@@ -145,6 +145,11 @@ class Atelier
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->libelle;
     }
 
 }

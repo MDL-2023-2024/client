@@ -1,0 +1,9 @@
+{% block formAtelier %}
+	<div class="d-none form-of-menu" form-for="vacation">
+		{% if vacationForm is null %}
+			<span class="d-block alert alert-danger w-100">Veuillez mettre crée un atelier</span>
+		{% else %}
+			{{ form(vacationForm) }}
+        {% endif %}
+		</div>
+	{% endblock %}
