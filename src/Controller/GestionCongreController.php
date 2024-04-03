@@ -13,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,14 +53,14 @@ class GestionCongreController extends AbstractController
                 $entityManager->persist($theme);
                 $entityManager->flush();
                 $this->addFlash('success', 'Thème ajouté avec succès !');
-                return $this->redirectToRoute('gestion_congre');
+                return $this->redirectToRoute('gestion_add');
             }
 
             if ($formVacation->isSubmitted() && $formVacation->isValid()) {
                 $entityManager->persist($vacation);
                 $entityManager->flush();
                 $this->addFlash('success', 'Vacation ajoutée avec succès !');
-                return $this->redirectToRoute('gestion_congre');
+                return $this->redirectToRoute('gestion_add');
             }
         }
         $formAtelier = $this->createForm(AteliersFormType::class, $atelier);
@@ -71,7 +70,7 @@ class GestionCongreController extends AbstractController
             $entityManager->persist($atelier);
             $entityManager->flush();
             $this->addFlash('success', 'Atelier ajouté avec succès !');
-            return $this->redirectToRoute('gestion_congre');
+            return $this->redirectToRoute('gestion_add');
         }
 
 
@@ -86,16 +85,38 @@ class GestionCongreController extends AbstractController
     }
 
     #[Route('/editVacation', name: 'edit_vacation')]
-    public function editVacation(Request $request, ManagerRegistry $doctrine, Vacation $vacation): Response
+    public function editVacation(Request $request, ManagerRegistry $doctrine): Response
     {
+        $vacation = new Vacation();
         $entityManager = $doctrine->getManager();
         $formVacation = $this->createForm(VacationFormType::class, $vacation);
         $formVacation->handleRequest($request);
 
         if ($formVacation->isSubmitted() && $formVacation->isValid()) {
+            $entityManager->persist($vacation);
             $entityManager->flush();
             $this->addFlash('success', 'Vacation modifiée avec succès !');
-            return $this->redirectToRoute('gestion_congre');
+            return $this->redirectToRoute('gestion_edit_vacation');
+        }
+
+        return $this->render('gestion_congre/edit_vacation.html.twig', [
+            'vacationForm' => $formVacation->createView(),
+        ]);
+    }
+
+    #[Route('/editVacation/{id}', name: 'edit_vacation_idgiven')]
+    public function editVacationId(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $vacation = new Vacation();
+        $entityManager = $doctrine->getManager();
+        $formVacation = $this->createForm(VacationFormType::class, $vacation);
+        $formVacation->handleRequest($request);
+
+        if ($formVacation->isSubmitted() && $formVacation->isValid()) {
+            $entityManager->persist($vacation);
+            $entityManager->flush();
+            $this->addFlash('success', 'Vacation modifiée avec succès !');
+            return $this->redirectToRoute('gestion_edit_vacation');
         }
 
         return $this->render('gestion_congre/edit_vacation.html.twig', [
