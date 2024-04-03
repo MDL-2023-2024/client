@@ -29,7 +29,7 @@ class GestionCongreController extends AbstractController
     }   
 
     #[Route('/new', name: 'add')]
-    public function add(Request $request, ManagerRegistry $doctrine): Response
+    public function new(Request $request, ManagerRegistry $doctrine): Response
     {
 
         $errors = [];
@@ -85,7 +85,7 @@ class GestionCongreController extends AbstractController
         ]);
     }
 
-    #[Route('/editVacation', name: 'add')]
+    #[Route('/editVacation', name: 'edit_vacation')]
     public function editVacation(Request $request, ManagerRegistry $doctrine, Vacation $vacation): Response
     {
         $entityManager = $doctrine->getManager();
