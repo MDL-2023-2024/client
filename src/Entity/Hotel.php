@@ -42,6 +42,9 @@ class Hotel
     #[ORM\OneToMany(targetEntity: Proposer::class, mappedBy: 'hotel')]
     private Collection $tarifs;
 
+    #[ORM\Column(length: 1000, nullable: true)]
+    private ?string $website = null;
+
     public function __construct()
     {
         $this->nuites = new ArrayCollection();
@@ -193,6 +196,18 @@ class Hotel
                 $proposer->setHotel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWebsite(): ?string
+    {
+        return $this->website;
+    }
+
+    public function setWebsite(?string $website): static
+    {
+        $this->website = $website;
 
         return $this;
     }
