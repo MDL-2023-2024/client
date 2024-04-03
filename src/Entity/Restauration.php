@@ -22,6 +22,9 @@ class Restauration
     #[ORM\Column(length: 255)]
     private ?string $typeRepas = null;
 
+    #[ORM\ManyToMany(targetEntity: Inscription::class, mappedBy: 'restaurations')]
+    private Collection $inscriptions;
+
     public function __construct()
     {
         $this->inscriptions = new ArrayCollection();
@@ -52,6 +55,33 @@ class Restauration
     public function setTypeRepas(string $typeRepas): static
     {
         $this->typeRepas = $typeRepas;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inscription>
+     */
+    public function getInscriptions(): Collection
+    {
+        return $this->inscriptions;
+    }
+
+    public function addInscription(Inscription $inscription): static
+    {
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions->add($inscription);
+            $inscription->addRestauration($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): static
+    {
+        if ($this->inscriptions->removeElement($inscription)) {
+            $inscription->removeRestauration($this);
+        }
 
         return $this;
     }
