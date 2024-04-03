@@ -18,11 +18,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/gestion', name: 'gestion_')]
 #[IsGranted("ROLE_USER")]
 class GestionCongreController extends AbstractController
 {
-    #[Route('/gestionCongre', name: 'gestion_congre')]
-    public function index(Request $request, ManagerRegistry $doctrine): Response
+    #[Route('/', name: 'home')]
+    public function index(): Response
+    {
+        return $this->render('gestion_congre/index.html.twig');
+    }   
+
+    #[Route('/new', name: 'add')]
+    public function add(Request $request, ManagerRegistry $doctrine): Response
     {
 
         $errors = [];
@@ -70,11 +77,29 @@ class GestionCongreController extends AbstractController
 
         $errors += $this->getErrors($formAtelier->getErrors(true));
 
-        return $this->render('gestion_congre/index.html.twig', [
+        return $this->render('gestion_congre/add_congre.html.twig', [
             'atelierForm' => $formAtelier->createView(),
             'themeForm' => isset($formTheme) ? $formTheme->createView() : null,
             'vacationForm' => isset($formVacation) ? $formVacation->createView() : null,
             'errors' => $errors,
+        ]);
+    }
+
+    #[Route('/editVacation', name: 'add')]
+    public function editVacation(Request $request, ManagerRegistry $doctrine, Vacation $vacation): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $formVacation = $this->createForm(VacationFormType::class, $vacation);
+        $formVacation->handleRequest($request);
+
+        if ($formVacation->isSubmitted() && $formVacation->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'Vacation modifiée avec succès !');
+            return $this->redirectToRoute('gestion_congre');
+        }
+
+        return $this->render('gestion_congre/edit_vacation.html.twig', [
+            'vacationForm' => $formVacation->createView(),
         ]);
     }
 
