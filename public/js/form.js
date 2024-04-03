@@ -20,4 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 		});
 	});
+    document.querySelectorAll(".form-of-menu").forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            // Trouver le bouton de soumission dans le formulaire
+            const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+            // Désactiver le bouton de soumission
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+        });
+    });
+    
 });

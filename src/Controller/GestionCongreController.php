@@ -8,14 +8,9 @@ use App\Entity\Vacation;
 use App\Form\AteliersFormType;
 use App\Form\ThemeFormType;
 use App\Form\VacationFormType;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use Error;
-use Exception;
-use phpDocumentor\Reflection\PseudoTypes\False_;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormInterface;
@@ -25,10 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[IsGranted("ROLE_USER")]
 class GestionCongreController extends AbstractController
-{   
+{
     #[Route('/gestionCongre', name: 'gestion_congre')]
     public function index(Request $request, ManagerRegistry $doctrine): Response
     {
+
+        $errors = [];
         $entityManager = $doctrine->getManager();
         $atelier = new Atelier();
         $atelierList = $entityManager->getRepository(Atelier::class)->findAll();
@@ -42,6 +39,9 @@ class GestionCongreController extends AbstractController
 
             $formVacation = $this->createForm(VacationFormType::class, $vacation);
             $formVacation = $formVacation->handleRequest($request);
+            
+            $errors += $this->getErrors($formTheme->getErrors(true));
+            $errors += $this->getErrors($formVacation->getErrors(true));
 
             if ($formTheme->isSubmitted() && $formTheme->isValid()) {
                 $entityManager->persist($theme);
@@ -67,10 +67,8 @@ class GestionCongreController extends AbstractController
             return $this->redirectToRoute('gestion_congre');
         }
 
-        $errors = [];
+
         $errors += $this->getErrors($formAtelier->getErrors(true));
-        $errors += $this->getErrors($formTheme->getErrors(true));
-        $errors += $this->getErrors($formVacation->getErrors(true));
 
         return $this->render('gestion_congre/index.html.twig', [
             'atelierForm' => $formAtelier->createView(),
