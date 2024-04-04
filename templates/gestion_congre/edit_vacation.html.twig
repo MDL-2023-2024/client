@@ -2,7 +2,6 @@
 
 {% block title %}Hello GestionCongreController!
 {% endblock %}
-
 {% block javascripts %}
 	<script src="{{ asset('js/form.js') }}"></script>
 {% endblock %}
@@ -12,9 +11,14 @@
 		<div class="card w-100">
 			<div class="card-body">
 				<div class="row justify-content-center align-items-center h-100">
-
 					<div class="col-md-6">
-						{% include "gestion_congre/menu.html.twig"|upper %}
+						<select class="form-select" size="7" aria-label="size 7 select example">
+							{% for vacation in vacations %}
+								<option value="{{vacation.id}}" class="fs-4" {{ loop.first ? 'selected' : '' }}>
+                                    [id: {{vacation.id}}]{{ vacation.dateheureDebut|format_datetime(pattern= 'dd MMM y, HH:mm', locale='fr') }}
+                                </option>
+							{% endfor %}
+						</select>
 					</div>
 					<div class="col-md-6" id="list-menu">
 						<div id="notif-info">
@@ -28,12 +32,11 @@
 									{% endfor %}
 								</div>
 							{% endif %}
-						</div
-						{% include "gestion_congre/form/vacationForm.html.twig" %}
+						</div>
+						{% include "gestion_congre/form/vacationForm.html.twig"  with {'show': true, 'id': vacations|first.id} %}
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-{% endblock %}
+	{% endblock %}

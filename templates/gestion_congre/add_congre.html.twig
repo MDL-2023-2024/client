@@ -3,6 +3,10 @@
 {% block title %}Hello GestionCongreController!
 {% endblock %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/menu/style.css') }}">
+{% endblock %}
+
 {% block javascripts %}
 	<script src="{{ asset('js/form.js') }}"></script>
 {% endblock %}
@@ -12,9 +16,14 @@
 		<div class="card w-100">
 			<div class="card-body">
 				<div class="row justify-content-center align-items-center h-100">
-
 					<div class="col-md-6">
-						{% include "gestion_congre/menu.html.twig"|upper %}
+						<div class="radio-menu">
+							<div class="container p-0">
+								{% include "gestion_congre/menu.html.twig" with {'name': 'Atelier', 'id': 'atelier'} %}
+								{% include "gestion_congre/menu.html.twig" with {'name': 'Thème', 'id': 'theme'} %}
+								{% include "gestion_congre/menu.html.twig" with {'name': 'Vacation', 'id': 'vacation'} %}
+							</div>
+						</div>
 					</div>
 					<div class="col-md-6" id="list-menu">
 						<div id="notif-info">

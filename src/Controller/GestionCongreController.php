@@ -25,7 +25,7 @@ class GestionCongreController extends AbstractController
     public function index(): Response
     {
         return $this->render('gestion_congre/index.html.twig');
-    }   
+    }
 
     #[Route('/new', name: 'add')]
     public function new(Request $request, ManagerRegistry $doctrine): Response
@@ -45,7 +45,7 @@ class GestionCongreController extends AbstractController
 
             $formVacation = $this->createForm(VacationFormType::class, $vacation);
             $formVacation = $formVacation->handleRequest($request);
-            
+
             $errors += $this->getErrors($formTheme->getErrors(true));
             $errors += $this->getErrors($formVacation->getErrors(true));
 
@@ -87,19 +87,14 @@ class GestionCongreController extends AbstractController
     #[Route('/editVacation', name: 'edit_vacation')]
     public function editVacation(Request $request, ManagerRegistry $doctrine): Response
     {
-        $vacation = new Vacation();
         $entityManager = $doctrine->getManager();
-        $formVacation = $this->createForm(VacationFormType::class, $vacation);
-        $formVacation->handleRequest($request);
+        $vacations = $entityManager->getRepository(Vacation::class)->findAll();
 
-        if ($formVacation->isSubmitted() && $formVacation->isValid()) {
-            $entityManager->persist($vacation);
-            $entityManager->flush();
-            $this->addFlash('success', 'Vacation modifiée avec succès !');
-            return $this->redirectToRoute('gestion_edit_vacation');
-        }
+        $formVacation = $this->createForm(VacationFormType::class, $vacations[0]);
+        $formVacation = $formVacation->handleRequest($request);
 
         return $this->render('gestion_congre/edit_vacation.html.twig', [
+            'vacations' => $vacations,
             'vacationForm' => $formVacation->createView(),
         ]);
     }
