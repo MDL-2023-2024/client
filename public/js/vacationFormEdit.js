@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var leForm = null;
 
         //desactivation du selector le temps 
-        //de la requete pour eviter les requetes multiples
-        this.disabled = true;
+        //de la requete pour eviter les requetes multiple
         // Cacher tous les formulaires ayant la classe 'form-of-menu'
         var forms = document.querySelectorAll('.form-of-menu');
         forms.forEach(function(form) {
@@ -23,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (leForm !== null) {
             leForm.style.display = 'block';
         } else {
+            this.disabled = true;
             // Sinon, charger le formulaire
             fetch('/gestion/editVacation/' + selectedOptionId)
                 .then(response => response.text())
@@ -41,10 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             submitButton.disabled = true;
                         }
                     });
+                    this.disabled = false;
                 })
                 .catch(error => console.error(error));
         }
-        this.disabled = true;
+        
 
         document.querySelectorAll(".form-of-menu").forEach(function (form) {
             form.addEventListener('submit', function (event) {
