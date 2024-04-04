@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des nuits.
+ * 
  * @extends ServiceEntityRepository<Nuite>
  *
  * @method Nuite|null find($id, $lockMode = null, $lockVersion = null)

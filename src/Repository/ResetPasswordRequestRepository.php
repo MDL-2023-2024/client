@@ -10,6 +10,8 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\Repository\ResetPasswordReques
 use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepositoryInterface;
 
 /**
+ * Repository des demandes de réinitialisation de mot de passe.
+ * 
  * @extends ServiceEntityRepository<ResetPasswordRequest>
  *
  * @method ResetPasswordRequest|null find($id, $lockMode = null, $lockVersion = null)

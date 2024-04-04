@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des ateliers.
+ * 
  * @extends ServiceEntityRepository<Atelier>
  *
  * @method Atelier|null find($id, $lockMode = null, $lockVersion = null)

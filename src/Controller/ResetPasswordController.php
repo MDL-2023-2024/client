@@ -19,11 +19,19 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
+/**
+ * Controller permettant de gérer la réinitialisation du mot de passe.
+ */
 #[Route('/reset-password')]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
-
+    /**
+     * Crée une nouvelle instance de ResetPasswordController.
+     *
+     * @param ResetPasswordHelperInterface $resetPasswordHelper Le service de réinitialisation du mot de passe.
+     * @param EntityManagerInterface $entityManager Le gestionnaire d'entités.
+     */
     public function __construct(
         private ResetPasswordHelperInterface $resetPasswordHelper,
         private EntityManagerInterface $entityManager
@@ -31,7 +39,11 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Display & process form to request a password reset.
+     * Affiche et traite le formulaire de demande de réinitialisation du mot de passe.
+     * 
+     * @param Request $request La requête HTTP.
+     * @param MailerInterface $mailer Le service d'envoi de mail.
+     * @return Response La page de demande de réinitialisation du mot de passe.
      */
     #[Route('', name: 'app_forgot_password_request')]
     public function request(Request $request, MailerInterface $mailer): Response
@@ -52,7 +64,11 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Confirmation page after a user has requested a password reset.
+     * Affiche la page de confirmation après qu'un utilisateur 
+     * a demandé une réinitialisation du mot de passe.
+     * 
+     * @return Response La page de confirmation.
+     * @throws ResetPasswordExceptionInterface Si le jeton de réinitialisation n'est pas trouvé.
      */
     #[Route('/check-email', name: 'app_check_email')]
     public function checkEmail(): Response
@@ -69,7 +85,13 @@ class ResetPasswordController extends AbstractController
     }
 
     /**
-     * Validates and process the reset URL that the user clicked in their email.
+     * Valide et traite l'URL de réinitialisation sur laquelle l'utilisateur a cliqué dans son email.
+     * 
+     * @param Request $request La requête HTTP.
+     * @param UserPasswordHasherInterface $passwordHasher Le service de hachage de mot de passe.
+     * @param string|null $token Le jeton de réinitialisation.
+     * @return Response La page de réinitialisation du mot de passe.
+     * @throws ResetPasswordExceptionInterface Si le jeton de réinitialisation n'est pas trouvé.
      */
     #[Route('/reset/{token}', name: 'app_reset_password')]
     public function reset(Request $request, UserPasswordHasherInterface $passwordHasher, string $token = null): Response
@@ -127,6 +149,13 @@ class ResetPasswordController extends AbstractController
         ]);
     }
 
+    /**
+     * Traite l'envoi de l'email de réinitialisation du mot de passe.
+     *
+     * @param string $emailFormData L'adresse email du compte.
+     * @param MailerInterface $mailer Le service d'envoi de mail.
+     * @return RedirectResponse La page de confirmation.
+     */
     private function processSendingPasswordResetEmail(string $emailFormData, MailerInterface $mailer): RedirectResponse
     {
         $user = $this->entityManager->getRepository(Compte::class)->findOneBy([

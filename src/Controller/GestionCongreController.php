@@ -11,22 +11,40 @@ use App\Form\VacationFormType;
 use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Validator\Constraints\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Controller permettant de gérer les ateliers, thèmes et vacations.
+ * L'utilisateur doit être connecté et posséder le rôle ROLE_USER pour accéder à ces fonctionnalités.
+ * @IsGranted("ROLE_USER")
+ */
 #[Route('/gestion', name: 'gestion_')]
 #[IsGranted("ROLE_USER")]
 class GestionCongreController extends AbstractController
 {
+    /**
+     * Affiche la page d'accueil de la gestion des ateliers, thèmes et vacations.
+     *
+     * @return Response La page d'accueil de la gestion des ateliers, thèmes et vacations.
+     */
     #[Route('/', name: 'home')]
     public function index(): Response
     {
         return $this->render('gestion_congre/index.html.twig');
     }
 
+    /**
+     * Affiche la page d'ajout d'un atelier, thème ou vacation.
+     *
+     * @param Request $request La requête HTTP.
+     * @param ManagerRegistry $doctrine Le gestionnaire d'entités.
+     * @return Response La page de modification d'un atelier, thème ou vacation.
+     */
     #[Route('/new', name: 'add')]
     public function new(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -81,6 +99,13 @@ class GestionCongreController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche la page de modification d'une vacation.
+     *
+     * @param Request $request La requête HTTP.
+     * @param ManagerRegistry $doctrine Le gestionnaire d'entités.
+     * @return Response La page de modification d'une vacation.
+     */
     #[Route('/editVacation', name: 'edit_vacation')]
     public function editVacation(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -88,8 +113,7 @@ class GestionCongreController extends AbstractController
         $vacations = $entityManager->getRepository(Vacation::class)->findAll();
         try {
             $vacation = $entityManager->getRepository(Vacation::class)->find($request->get('id'));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $vacation = $vacations[0];
         }
 
@@ -105,6 +129,14 @@ class GestionCongreController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche un formulaire qui permer de modifier une vacation
+     * et s'occupe de la modification de la vacation.
+     *
+     * @param Request $request La requête HTTP.
+     * @param ManagerRegistry $doctrine Le gestionnaire d'entités.
+     * @return Response Le formulaire de modification d'une vacation ou la page de modification d'une vacation.
+     */
     #[Route('/editVacation/{id}', name: 'edit_vacation_idgiven')]
     public function editVacationId(Request $request, ManagerRegistry $doctrine): Response
     {
@@ -125,7 +157,7 @@ class GestionCongreController extends AbstractController
         $errors += $this->getErrors($formVacation->getErrors(true));
         if (count($errors) > 0) {
             return $this->redirectToRoute('gestion_edit_vacation', array('id' => $vacation->getId()));
-        }	
+        }
         return $this->render('gestion_congre/form/vacationForm.html.twig', [
             'vacationForm' => $formVacation->createView(),
             'id' => $vacation->getId(),
@@ -133,7 +165,13 @@ class GestionCongreController extends AbstractController
         ]);
     }
 
-    private function getErrors($formError)
+    /**
+     * S'occupe de recupérer les erreurs d'un formulaire et de les afficher.
+     * 
+     * @param FormError|FormErrorIterator $formError Les erreurs du formulaire.
+     * @return array Les erreurs du formulaire.
+     */
+    private function getErrors(FormError | FormErrorIterator $formError): array
     {
         $errors = [];
         if ($formError instanceof FormError) {

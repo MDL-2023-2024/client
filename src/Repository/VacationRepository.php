@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des vacances.
+ * 
  * @extends ServiceEntityRepository<Vacation>
  *
  * @method Vacation|null find($id, $lockMode = null, $lockVersion = null)

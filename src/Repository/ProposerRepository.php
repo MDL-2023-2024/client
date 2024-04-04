@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des proposers.
+ * 
  * @extends ServiceEntityRepository<Proposer>
  *
  * @method Proposer|null find($id, $lockMode = null, $lockVersion = null)
