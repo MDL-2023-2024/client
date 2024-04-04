@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     var selectElement = document.querySelector('.form-select');
+
     selectElement.disabled = false;
+    
     selectElement.addEventListener('change', function() {
         var selectedOptionId = this.value;
         var leForm = null;
@@ -30,9 +32,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     formContainer.insertAdjacentHTML('beforeend', html);
                     leForm = formContainer.lastElementChild;
                     leForm.style.display = 'block';
+
+                    leForm.addEventListener('submit', function(event) {
+                        // Trouver le bouton de soumission dans le formulaire
+                        const submitButton = leForm.querySelector('button[type="submit"], input[type="submit"]');
+                        // Désactiver le bouton de soumission
+                        if (submitButton) {
+                            submitButton.disabled = true;
+                        }
+                    });
                 })
                 .catch(error => console.error(error));
         }
         this.disabled = true;
+
+        document.querySelectorAll(".form-of-menu").forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                // Trouver le bouton de soumission dans le formulaire
+                const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+                // Désactiver le bouton de soumission
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+            });
+        });
     });
 });
