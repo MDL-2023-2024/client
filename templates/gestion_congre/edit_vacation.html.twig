@@ -3,8 +3,10 @@
 {% block title %}Hello GestionCongreController!
 {% endblock %}
 {% block javascripts %}
-	<script src="{{ asset('js/form.js') }}"></script>
+	<script src="{{ asset('js/vacationFormEdit.js') }}"></script>
 {% endblock %}
+
+{% set error_flashes = app.flashes('error') %}
 
 {% block body %}
 	<div class="container flex-grow-1 d-flex justify-content-center align-items-center">
@@ -12,28 +14,28 @@
 			<div class="card-body">
 				<div class="row justify-content-center align-items-center h-100">
 					<div class="col-md-6">
-						<select class="form-select" size="7" aria-label="size 7 select example">
+						<select class="form-select" size="7" aria-label="size 7 select example" autofocus disabled>
 							{% for vacation in vacations %}
-								<option value="{{vacation.id}}" class="fs-4" {{ loop.first ? 'selected' : '' }}>
+								<option value="{{vacation.id}}" class="fs-4" {{ vacation.id == vacationid ? 'selected' : '' }}>
                                     [id: {{vacation.id}}]{{ vacation.dateheureDebut|format_datetime(pattern= 'dd MMM y, HH:mm', locale='fr') }}
                                 </option>
 							{% endfor %}
 						</select>
 					</div>
-					<div class="col-md-6" id="list-menu">
+					<div class="col-md-6" id="list-vacation-form">
 						<div id="notif-info">
 							{% for flash in app.flashes('success') %}
 								<div class="alert alert-success w-100" id="notif-info">{{ flash }}</div>
 							{% endfor %}
-							{% if errors is defined and errors|length > 0 %}
+							{% if error_flashes|length > 0 %}
 								<div class="alert alert-danger">
-									{% for error in errors %}
+									{% for error in error_flashes %}
 										<p>{{ error }}</p>
 									{% endfor %}
 								</div>
 							{% endif %}
 						</div>
-						{% include "gestion_congre/form/vacationForm.html.twig"  with {'show': true, 'id': vacations|first.id} %}
+						{% include "gestion_congre/form/vacationForm.html.twig"  with {'show': true, 'id': vacationid} %}
 					</div>
 				</div>
 			</div>

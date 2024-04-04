@@ -2,17 +2,17 @@
 	<div class="d-block form-of-menu" form-for="atelier">
 		{{ form_errors(atelierForm) }}
 
-    {{ form_start(atelierForm) }}
-        <div class="mb-3">
-        {{ form_row(atelierForm.libelle) }}
-        </div>
-        <div class="mb-3">
-        {{ form_row(atelierForm.nbPlacesMaxi, {
+		{{ form_start(atelierForm) }}
+		<div class="mb-3">
+			{{ form_row(atelierForm.libelle) }}
+		</div>
+		<div class="mb-3">
+			{{ form_row(atelierForm.nbPlacesMaxi, {
             label: 'Nombre de place maximum'
         }) }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-    {{ form_end(atelierForm) }}
 		</div>
-	{% endblock %}
+
+		<button type="submit" class="btn btn-primary">Enregistrer</button>
+		{{ form_end(atelierForm) }}
+	</div>
+{% endblock %}

@@ -1,9 +1,9 @@
 {% block formAtelier %}
-	<div class="{{ (show) ? '' : 'd-none' }} form-of-menu" {{ (id is defined) ? 'id=' ~ id  : '' }} form-for="vacation">
+	<div class="{{ (show is defined) ? '' : 'd-none' }} form-of-menu" {{ (id is defined) ? 'id=' ~ id : '' }} form-for="vacation">
 		{% if vacationForm is null %}
 			<span class="d-block alert alert-danger w-100">Veuillez mettre crée un atelier</span>
 		{% else %}
-			{{ form(vacationForm) }}
-        {% endif %}
+			{{ form(vacationForm) }}{% endif %}
 		</div>
-	{% endblock %}
+	</div>
+{% endblock %}

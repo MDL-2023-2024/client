@@ -11,6 +11,8 @@
 	<script src="{{ asset('js/form.js') }}"></script>
 {% endblock %}
 
+{% set error_flashes = app.flashes('error') %}
+
 {% block body %}
 	<div class="container flex-grow-1 d-flex justify-content-center align-items-center">
 		<div class="card w-100">
@@ -28,11 +30,11 @@
 					<div class="col-md-6" id="list-menu">
 						<div id="notif-info">
 							{% for flash in app.flashes('success') %}
-								<div class="alert alert-success w-100" id="notif-info">{{ flash }}</div>
+								<div class="alert alert-success w-100">{{ flash }}</div>
 							{% endfor %}
-							{% if errors is defined and errors|length > 0 %}
+							{% if error_flashes|length > 0 %}
 								<div class="alert alert-danger">
-									{% for error in errors %}
+									{% for error in error_flashes %}
 										<p>{{ error }}</p>
 									{% endfor %}
 								</div>
