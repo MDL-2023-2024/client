@@ -110,22 +110,11 @@ class GestionCongreController extends AbstractController
     public function editVacation(Request $request, ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
-        $vacations = $entityManager->getRepository(Vacation::class)->findAll();
-        try {
-            $vacation = $entityManager->getRepository(Vacation::class)->find($request->get('id'));
-        } catch (\Exception $e) {
-            $vacation = $vacations[0];
-        }
-
-        $formVacation = $this->createForm(VacationFormType::class, $vacation,  [
-            'action' => $this->generateUrl('gestion_edit_vacation_idgiven', array('id' => $vacation->getId())),
-        ]);
-        $formVacation = $formVacation->handleRequest($request);
+        //obtien tout les atelier avec au moin 1 vacataion
+        $atelierWithVacation = $entityManager->getRepository(Atelier::class)->findWithVacations();
 
         return $this->render('gestion_congre/edit_vacation.html.twig', [
-            'vacations' => $vacations,
-            'vacationid' => $vacation->getId(),
-            'vacationForm' => $formVacation->createView(),
+            'ateliers' => $atelierWithVacation,
         ]);
     }
 
