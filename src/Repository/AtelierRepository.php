@@ -23,6 +23,18 @@ class AtelierRepository extends ServiceEntityRepository
         parent::__construct($registry, Atelier::class);
     }
 
+    /**
+     * Récupère tous les ateliers qui ont au moins une vacation.
+     *
+     * @return Atelier[] Les ateliers avec leurs vacations.
+     */
+    public function findWithVacations()
+    {
+        return $this->createQueryBuilder('a')
+            ->innerJoin('a.vacations', 'v')
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return Atelier[] Returns an array of Atelier objects
 //     */

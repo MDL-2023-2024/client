@@ -110,22 +110,11 @@ class GestionCongreController extends AbstractController
     public function editVacation(Request $request, ManagerRegistry $doctrine): Response
     {
         $entityManager = $doctrine->getManager();
-        $vacations = $entityManager->getRepository(Vacation::class)->findAll();
-        try {
-            $vacation = $entityManager->getRepository(Vacation::class)->find($request->get('id'));
-        } catch (\Exception $e) {
-            $vacation = $vacations[0];
-        }
-
-        $formVacation = $this->createForm(VacationFormType::class, $vacation,  [
-            'action' => $this->generateUrl('gestion_edit_vacation_idgiven', array('id' => $vacation->getId())),
-        ]);
-        $formVacation = $formVacation->handleRequest($request);
+        //obtien tout les atelier avec au moin 1 vacataion
+        $atelierWithVacation = $entityManager->getRepository(Atelier::class)->findWithVacations();
 
         return $this->render('gestion_congre/edit_vacation.html.twig', [
-            'vacations' => $vacations,
-            'vacationid' => $vacation->getId(),
-            'vacationForm' => $formVacation->createView(),
+            'ateliers' => $atelierWithVacation,
         ]);
     }
 
@@ -142,23 +131,21 @@ class GestionCongreController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
         $vacation = $entityManager->getRepository(Vacation::class)->find($request->get('id'));
-        $formVacation = $this->createForm(VacationFormType::class, $vacation, [
-            'action' => $this->generateUrl('gestion_edit_vacation_idgiven', array('id' => $vacation->getId())),
-        ]);
+        $formVacation = $this->createForm(VacationFormType::class, $vacation);
         $formVacation->handleRequest($request);
 
         if ($formVacation->isSubmitted() && $formVacation->isValid()) {
             $entityManager->persist($vacation);
             $entityManager->flush();
-            $this->addFlash('success', 'Vacation ajoutée avec succès !');
+            $this->addFlash('success', 'Vacation modifié avec succès !');
             return $this->redirectToRoute('gestion_edit_vacation', array('id' => $vacation->getId()));
         }
         $errors = [];
         $errors += $this->getErrors($formVacation->getErrors(true));
         if (count($errors) > 0) {
-            return $this->redirectToRoute('gestion_edit_vacation', array('id' => $vacation->getId()));
+            return $this->redirectToRoute('gestion_edit_vacation_idgiven', array('id' => $vacation->getId()));
         }
-        return $this->render('gestion_congre/form/vacationForm.html.twig', [
+        return $this->render('gestion_congre/edit_vacation_form.html.twig', [
             'vacationForm' => $formVacation->createView(),
             'id' => $vacation->getId(),
             'show' => true,

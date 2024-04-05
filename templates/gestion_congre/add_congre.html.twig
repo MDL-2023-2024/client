@@ -17,6 +17,10 @@
 	<div class="container flex-grow-1 d-flex justify-content-center align-items-center">
 		<div class="card w-100">
 			<div class="card-body">
+				<div class="row mb-4">
+					<h2 class="text-center">Ajouter un atelier, thème ou vacation</h2>
+					<a href="{{ path('gestion_home') }}" class="btn btn-secondary m-auto" style="width: 10%;">Retour</a>
+				</div>
 				<div class="row justify-content-center align-items-center h-100">
 					<div class="col-md-6">
 						<div class="radio-menu">
@@ -33,7 +37,7 @@
 								<div class="alert alert-success w-100">{{ flash }}</div>
 							{% endfor %}
 							{% if error_flashes|length > 0 %}
-								<div class="alert alert-danger">
+								<div class="alert alert-danger mt-3">
 									{% for error in error_flashes %}
 										<p>{{ error }}</p>
 									{% endfor %}
@@ -48,5 +52,4 @@
 			</div>
 		</div>
 	</div>
-
 {% endblock %}

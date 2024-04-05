@@ -12,33 +12,44 @@
 	<div class="container flex-grow-1 d-flex justify-content-center align-items-center">
 		<div class="card w-100">
 			<div class="card-body">
+				<div class="row mb-4">
+					<h2 class="text-center">Modifier une vacation</h2>
+					<a href="{{ path('gestion_home') }}" class="btn btn-secondary m-auto" style="width: 10%;">Retour</a>
+				</div>
 				<div class="row justify-content-center align-items-center h-100">
 					<div class="col-md-6">
-						<select class="form-select" size="7" aria-label="size 7 select example" autofocus disabled>
-							{% for vacation in vacations %}
-								<option value="{{vacation.id}}" class="fs-4" {{ vacation.id == vacationid ? 'selected' : '' }}>
-                                    [id: {{vacation.id}}]{{ vacation.dateheureDebut|format_datetime(pattern= 'dd MMM y, HH:mm', locale='fr') }}
-                                </option>
+						<select class="form-select" id="select-atelier" size="7" aria-label="size 7 select example" autofocus disabled>
+							{% for atelier in ateliers %}
+								<option value="{{atelier.id}}" class="fs-4" {{(loop.first) ? "selected" : "" }}>
+									{{atelier.libelle}}
+								</option>
 							{% endfor %}
 						</select>
 					</div>
-					<div class="col-md-6" id="list-vacation-form">
+					<div class="col-md-6">
 						<div id="notif-info">
 							{% for flash in app.flashes('success') %}
 								<div class="alert alert-success w-100" id="notif-info">{{ flash }}</div>
 							{% endfor %}
-							{% if error_flashes|length > 0 %}
-								<div class="alert alert-danger">
-									{% for error in error_flashes %}
-										<p>{{ error }}</p>
-									{% endfor %}
-								</div>
-							{% endif %}
 						</div>
-						{% include "gestion_congre/form/vacationForm.html.twig"  with {'show': true, 'id': vacationid} %}
+						{% for atelier in ateliers %}
+							<form action="" method="get" id="vacation-list-{{atelier.id}}" class="form-list-vacation {{ (loop.first) ? '' : 'd-none'}}">
+								<select class="form-select" size="7" aria-label="size 7 select example">
+									{% for vacation in atelier.vacations %}
+										<option value="{{vacation.id}}" class="fs-4" {{(loop.first) ? "selected" : "" }}>
+											{{vacation.id}}
+											Début :
+											{{ vacation.dateheureDebut|format_datetime(pattern= 'dd MMM y, HH:mm', locale='fr') }}
+										</option>
+									{% endfor %}
+								</select>
+								<button class="btn btn-primary mt-3 m-auto" type="submit" disabled>Modifier</button>
+							</form>
+						{% endfor %}
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
 
-	{% endblock %}
+{% endblock %}
