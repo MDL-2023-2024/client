@@ -131,23 +131,21 @@ class GestionCongreController extends AbstractController
     {
         $entityManager = $doctrine->getManager();
         $vacation = $entityManager->getRepository(Vacation::class)->find($request->get('id'));
-        $formVacation = $this->createForm(VacationFormType::class, $vacation, [
-            'action' => $this->generateUrl('gestion_edit_vacation_idgiven', array('id' => $vacation->getId())),
-        ]);
+        $formVacation = $this->createForm(VacationFormType::class, $vacation);
         $formVacation->handleRequest($request);
 
         if ($formVacation->isSubmitted() && $formVacation->isValid()) {
             $entityManager->persist($vacation);
             $entityManager->flush();
-            $this->addFlash('success', 'Vacation ajoutée avec succès !');
+            $this->addFlash('success', 'Vacation modifié avec succès !');
             return $this->redirectToRoute('gestion_edit_vacation', array('id' => $vacation->getId()));
         }
         $errors = [];
         $errors += $this->getErrors($formVacation->getErrors(true));
         if (count($errors) > 0) {
-            return $this->redirectToRoute('gestion_edit_vacation', array('id' => $vacation->getId()));
+            return $this->redirectToRoute('gestion_edit_vacation_idgiven', array('id' => $vacation->getId()));
         }
-        return $this->render('gestion_congre/form/vacationForm.html.twig', [
+        return $this->render('gestion_congre/edit_vacation_form.html.twig', [
             'vacationForm' => $formVacation->createView(),
             'id' => $vacation->getId(),
             'show' => true,

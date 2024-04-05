@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	selectElement.disabled = false;
 
+    //active tout les bouton dans le formulaire
+    document.querySelectorAll(".form-list-vacation button").forEach(function (button) {
+        button.disabled = false;
+    });
+
+
+
 	selectElement.addEventListener("change", function () {
 		var selectedOptionId = this.value;
 

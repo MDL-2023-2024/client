@@ -33,7 +33,7 @@
 								<div class="alert alert-success w-100">{{ flash }}</div>
 							{% endfor %}
 							{% if error_flashes|length > 0 %}
-								<div class="alert alert-danger">
+								<div class="alert alert-danger mt-3">
 									{% for error in error_flashes %}
 										<p>{{ error }}</p>
 									{% endfor %}
@@ -48,5 +48,4 @@
 			</div>
 		</div>
 	</div>
-
 {% endblock %}

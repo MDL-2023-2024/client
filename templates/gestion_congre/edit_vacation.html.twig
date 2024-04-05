@@ -16,7 +16,7 @@
 					<div class="col-md-6">
 						<select class="form-select" id="select-atelier" size="7" aria-label="size 7 select example" autofocus disabled>
 							{% for atelier in ateliers %}
-								<option value="{{atelier.id}}" class="fs-4">
+								<option value="{{atelier.id}}" class="fs-4" {{(loop.first) ? "selected" : "" }}>
 									{{atelier.libelle}}
 								</option>
 							{% endfor %}
@@ -39,7 +39,7 @@
 										</option>
 									{% endfor %}
 								</select>
-								<button class="btn btn-primary mt-3 m-auto" type="submit">Modifier</button>
+								<button class="btn btn-primary mt-3 m-auto" type="submit" disabled>Modifier</button>
 							</form>
 						{% endfor %}
 					</div>
