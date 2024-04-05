@@ -26,27 +26,21 @@
 				<table class="table table-striped table-hover table-bordered">
 					<thead>
 						<tr>
-							<th scope="col">Thèmes</th>
-							<th scope="col">Atelier</th>
-							<th scope="col">Nombre de places</th>
+							<th scope="col-6">Thèmes</th>
+							<th scope="col-6">Atelier</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Thornton</td>
-							<td>@bird</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
+                        {% for theme in themes %}
+                            <tr>
+                                <td>{{ theme.libelle }}</td>
+                                <td>
+                                    {% for atelier in theme.ateliers %}
+                                        {{ atelier.libelle }} ({{atelier.nbPlacesMaxi}} maximum)</br>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
 					</tbody>
 				</table>
 			</div>

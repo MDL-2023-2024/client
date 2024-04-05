@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des thèmes.
+ * 
  * @extends ServiceEntityRepository<Theme>
  *
  * @method Theme|null find($id, $lockMode = null, $lockVersion = null)

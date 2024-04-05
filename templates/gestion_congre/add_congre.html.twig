@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GestionCongreController!
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/menu/style.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/form.js') }}"></script>
+{% endblock %}
+
+{% set error_flashes = app.flashes('error') %}
+
+{% block body %}
+	<div class="container flex-grow-1 d-flex justify-content-center align-items-center">
+		<div class="card w-100">
+			<div class="card-body">
+				<div class="row justify-content-center align-items-center h-100">
+					<div class="col-md-6">
+						<div class="radio-menu">
+							<div class="container p-0">
+								{% include "gestion_congre/menu.html.twig" with {'name': 'Atelier', 'id': 'atelier'} %}
+								{% include "gestion_congre/menu.html.twig" with {'name': 'Thème', 'id': 'theme'} %}
+								{% include "gestion_congre/menu.html.twig" with {'name': 'Vacation', 'id': 'vacation'} %}
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6" id="list-menu">
+						<div id="notif-info">
+							{% for flash in app.flashes('success') %}
+								<div class="alert alert-success w-100">{{ flash }}</div>
+							{% endfor %}
+							{% if error_flashes|length > 0 %}
+								<div class="alert alert-danger">
+									{% for error in error_flashes %}
+										<p>{{ error }}</p>
+									{% endfor %}
+								</div>
+							{% endif %}
+						</div>
+						{% include "gestion_congre/form/atelierForm.html.twig" %}
+						{% include "gestion_congre/form/themeForm.html.twig" %}
+						{% include "gestion_congre/form/vacationForm.html.twig" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+document.addEventListener('DOMContentLoaded', function() {
+    var selectElement = document.querySelector('.form-select');
+
+    selectElement.disabled = false;
+    
+    selectElement.addEventListener('change', function() {
+        var selectedOptionId = this.value;
+        var leForm = null;
+
+        //desactivation du selector le temps 
+        //de la requete pour eviter les requetes multiple
+        // Cacher tous les formulaires ayant la classe 'form-of-menu'
+        var forms = document.querySelectorAll('.form-of-menu');
+        forms.forEach(function(form) {
+            form.style.display = 'none';
+            if (form.id === selectedOptionId) {
+                leForm = form;
+            }
+        });
+
+        // Si le formulaire existe déjà, affichez-le
+        if (leForm !== null) {
+            leForm.style.display = 'block';
+        } else {
+            this.disabled = true;
+            // Sinon, charger le formulaire
+            fetch('/gestion/editVacation/' + selectedOptionId)
+                .then(response => response.text())
+                .then(html => {
+                    // L'inserer dans le dom la ou se trouve tout les forms et l'afficher
+                    var formContainer = document.querySelector('#list-vacation-form');
+                    formContainer.insertAdjacentHTML('beforeend', html);
+                    leForm = formContainer.lastElementChild;
+                    leForm.style.display = 'block';
+
+                    leForm.addEventListener('submit', function(event) {
+                        // Trouver le bouton de soumission dans le formulaire
+                        const submitButton = leForm.querySelector('button[type="submit"], input[type="submit"]');
+                        // Désactiver le bouton de soumission
+                        if (submitButton) {
+                            submitButton.disabled = true;
+                        }
+                    });
+                    this.disabled = false;
+                })
+                .catch(error => console.error(error));
+        }
+        
+
+        document.querySelectorAll(".form-of-menu").forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                // Trouver le bouton de soumission dans le formulaire
+                const submitButton = form.querySelector('button[type="submit"], input[type="submit"]');
+                // Désactiver le bouton de soumission
+                if (submitButton) {
+                    submitButton.disabled = true;
+                }
+            });
+        });
+    });
+});

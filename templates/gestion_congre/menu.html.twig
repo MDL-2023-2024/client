@@ -1,49 +1,6 @@
 {% block menu %}
-	<style>
-
-		.radio-menu input[type="radio"] {
-			display: none;
-		}
-
-		.radio-menu label {
-			background-color: #f8f9fa;
-			border: 2px solid #adb5bd;
-			color: #adb5bd;
-			cursor: pointer;
-			padding: 10px 20px;
-			margin: 0 10px;
-			transition: background-color 0.3s, color 0.3s;
-			flex: 1;
-			text-align: center;
-		}
-
-		.radio-menu label:hover {
-			background-color: #e9ecef;
-		}
-
-		.radio-menu input[type="radio"]:checked + label {
-			background-color: #007bff;
-			color: #fff;
-			border-color: #007bff;
-		}
-	</style>
-
-
-	<div class="radio-menu">
-		<div class="container p-0">
-			<div class="row">
-				<input type="radio" id="atelier" name="menu" checked>
-				<label for="atelier">ATELIER</label>
-			</div>
-
-			<div class="row">
-				<input type="radio" id="theme" name="menu">
-				<label for="theme">Thême</label>
-			</div>
-            <div class="row">
-				<input type="radio" id="vacation" name="menu">
-				<label for="vacation">Vacation</label>
-			</div>
-		</div>
+	<div class="row">
+		<input type="radio" id="{{id}}" name="menu">
+		<label for="{{id}}">{{name}}</label>
 	</div>
 {% endblock %}
