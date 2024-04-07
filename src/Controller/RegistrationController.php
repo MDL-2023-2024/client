@@ -16,15 +16,34 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+/**
+ * Controller permettant de gérer l'inscription d'un utilisateur.
+ */
 class RegistrationController extends AbstractController
 {
+    /**
+     * @var EmailVerifier Le service de vérification d'email.
+     */
     private EmailVerifier $emailVerifier;
 
+    /**
+     * Crée une nouvelle instance de RegistrationController.
+     *
+     * @param EmailVerifier $emailVerifier Le service de vérification d'email.
+     */
     public function __construct(EmailVerifier $emailVerifier)
     {
         $this->emailVerifier = $emailVerifier;
     }
 
+    /**
+     * Affiche le formulaire d'inscription et inscrit un utilisateur.
+     *
+     * @param Request $request La requête HTTP.
+     * @param UserPasswordHasherInterface $userPasswordHasher Le service de hachage de mot de passe.
+     * @param EntityManagerInterface $entityManager Le gestionnaire d'entités.
+     * @return Response La page d'inscription si erreur ou la page d'accueil si succès.
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -81,6 +100,12 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * Vérifie l'email de l'utilisateur.
+     *
+     * @param Request $request La requête HTTP.
+     * @return Response La page d'inscription si erreur ou la page d'accueil si succès.
+     */
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request): Response
     {

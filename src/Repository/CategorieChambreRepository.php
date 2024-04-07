@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des catégories de chambre.
+ * 
  * @extends ServiceEntityRepository<CategorieChambre>
  *
  * @method CategorieChambre|null find($id, $lockMode = null, $lockVersion = null)

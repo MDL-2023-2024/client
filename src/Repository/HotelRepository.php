@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des hôtels.
+ * 
  * @extends ServiceEntityRepository<Hotel>
  *
  * @method Hotel|null find($id, $lockMode = null, $lockVersion = null)

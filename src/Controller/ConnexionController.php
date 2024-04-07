@@ -7,8 +7,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Controller s'occupant de la connexion des utilisateurs.
+ */
 class ConnexionController extends AbstractController
 {
+    /**
+     * Affiche le formulaire de connexion et gère la connexion de l'utilisateur
+     * ainsi que les erreurs de connexion.
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -24,6 +34,11 @@ class ConnexionController extends AbstractController
         ]);
     }
 
+    /**
+     * Déconnecte l'utilisateur.
+     *
+     * @return void
+     */
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

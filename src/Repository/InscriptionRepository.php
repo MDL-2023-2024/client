@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des inscriptions.
+ * 
  * @extends ServiceEntityRepository<Inscription>
  *
  * @method Inscription|null find($id, $lockMode = null, $lockVersion = null)

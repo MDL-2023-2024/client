@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository des restaurations.
+ * 
  * @extends ServiceEntityRepository<Restauration>
  *
  * @method Restauration|null find($id, $lockMode = null, $lockVersion = null)
