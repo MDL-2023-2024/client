@@ -9,16 +9,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
 use Doctrine\Persistence\ManagerRegistry;
 
 class InscriptionController extends AbstractController
 {
 
     #[Route('/inscription', name: 'inscription')]
-    public function index(Request $request, ManagerRegistry $doctrine): Response
-    {
-
+    public function index(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response {
         $entityManager = $doctrine->getManager();
+
         // Créer une nouvelle inscription
         $inscription = new Inscription();
         $nuite1 = new Nuite();
@@ -30,7 +33,6 @@ class InscriptionController extends AbstractController
 
         // Créer le formulaire
         $form = $this->createForm(InscriptionType::class, $inscription);
-        // Gérer la requête
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -44,20 +46,32 @@ class InscriptionController extends AbstractController
             $nuite2->setInscription($inscription);
             $entityManager->persist($nuite2);
             $entityManager->flush();
-            $this->addFlash('success', 'Inscription creé avec succès !');
+            $mail=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
+            $this->addFlash('success', 'Inscription créée avec succès !');
+
+            // Préparation de l'email
+            $email = (new TemplatedEmail())
+                ->from(new Address('no-reply@apsio.com', 'Confirmation Inscription | Maison Des Ligues'))
+                ->to($mail)
+                ->subject('Confirmation de votre inscription')
+                ->htmlTemplate('inscription/confirmation.html.twig')
+                ->context([
+                    'user' => $this->getUser(),
+                    'inscription' => $inscription,
+                ]);
+
+            // Envoi de l'email
+            $mailer->send($email);
 
             // Rediriger l'utilisateur ou afficher un message de succès
             return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
         }
 
-        $email = $this->getUser()->getUserIdentifier();
-        $numLicence = $this->getUser()->getNumlicence();
-
-        // Rendre le formulaire dans la vue
+        // Affichage du formulaire
         return $this->render('inscription/index.html.twig', [
             'form' => $form->createView(),
-            'numLicence' => $numLicence,
-            'email' => $email,
+            'numLicence' => $this->getUser()->getNumLicence(),
+            'email' => $this->getUser()->getEmail(),
         ]);
     }
 
