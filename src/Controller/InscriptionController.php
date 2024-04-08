@@ -11,10 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 
-class InscriptionController extends AbstractController {
+class InscriptionController extends AbstractController
+{
 
     #[Route('/inscription', name: 'inscription')]
-    public function index(Request $request, ManagerRegistry $doctrine): Response {
+    public function index(Request $request, ManagerRegistry $doctrine): Response
+    {
 
         $entityManager = $doctrine->getManager();
         // Créer une nouvelle inscription
@@ -45,7 +47,7 @@ class InscriptionController extends AbstractController {
             $this->addFlash('success', 'Inscription creé avec succès !');
 
             // Rediriger l'utilisateur ou afficher un message de succès
-           return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
+            return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
         }
 
         $email = $this->getUser()->getUserIdentifier();
@@ -53,17 +55,26 @@ class InscriptionController extends AbstractController {
 
         // Rendre le formulaire dans la vue
         return $this->render('inscription/index.html.twig', [
-                    'form' => $form->createView(), 
-                    'numLicence' => $numLicence, 
-                    'email' => $email,
+            'form' => $form->createView(),
+            'numLicence' => $numLicence,
+            'email' => $email,
         ]);
     }
 
     #[Route('/inscription/confirm/{id}', name: 'inscription_confirm')]
-    public function confirm(Inscription $inscription): Response {
+    public function confirm(Inscription $inscription): Response
+    {
+        $total = 130;
+        foreach ($inscription->getNuites() as $nuite) {
+            $total += $nuite->getCategorie()->getTarifs()[0]->getTarifNuite();
+        }
+        foreach ($inscription->getRestaurations() as $restauration) {
+            $total += 38;
+        }
         // Afficher un message de confirmation
         return $this->render('inscription/confirm.html.twig', [
-                    'inscription' => $inscription,
+            'total' => $total,
+            'inscription' => $inscription,
         ]);
     }
 }
