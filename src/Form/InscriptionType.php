@@ -32,15 +32,18 @@ class InscriptionType extends AbstractType
                 'entry_options' => ['label' => false],
                 'by_reference' => false,
                 'required' => false,
+                'label' => false,
             ])
             ->add('restaurations' , EntityType::class, [
+                'label' => 'Restauration pour l\'accompagnant',
                 'class' => Restauration::class,
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
             ])
             ->add('enregistrer', SubmitType::class, [
-                'attr' => ['class' => 'btn-primary'],
+                'label' => "S'inscrire",
+                'attr' => ['class' => 'btn-primary m-auto d-block'],
             ]);
     }
 

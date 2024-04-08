@@ -23,10 +23,10 @@ class InscriptionController extends AbstractController {
 
         // Créer une nouvelle inscription
         $inscription = new Inscription();
-        $inscription->setDateInscription(new \DateTime());
         $nuite1 = new Nuite();
-        $nuite1->setDateNuitee(new \DateTime('2021-10-01'));
         $nuite2 = new Nuite();
+        $nuite1->setDateNuitee(new \DateTime('2024-09-07'));
+        $nuite2->setDateNuitee(new \DateTime('2024-09-08'));
         $inscription->getNuites()->add($nuite1);
         $inscription->getNuites()->add($nuite2);
 
@@ -35,12 +35,17 @@ class InscriptionController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $inscription->setCompte($this->getUser()); // Assuming $this->getUser() returns the currently logged in user
+            $inscription->setDateInscription(new \DateTime());
+            // Ici, vous pouvez sauvegarder l'inscription dans la base de données
+            // par exemple, en utilisant l'EntityManager
+            $inscription->setCompte($this->getUser());
             $entityManager->persist($inscription);
+            $nuite1->setInscription($inscription);
             $entityManager->persist($nuite1);
+            $nuite2->setInscription($inscription);
             $entityManager->persist($nuite2);
             $entityManager->flush();
-            $mail=filer_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
+            $mail=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
             $this->addFlash('success', 'Inscription créée avec succès !');
 
             // Préparation de l'email
@@ -57,8 +62,8 @@ class InscriptionController extends AbstractController {
             // Envoi de l'email
             $mailer->send($email);
 
-            // Redirection après l'inscription et l'envoi de l'email
-            return $this->redirectToRoute('acceuil');
+            // Rediriger l'utilisateur ou afficher un message de succès
+           return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
         }
 
         // Affichage du formulaire
@@ -66,6 +71,14 @@ class InscriptionController extends AbstractController {
             'form' => $form->createView(),
             'numLicence' => $this->getUser()->getNumLicence(),
             'email' => $this->getUser()->getEmail(),
+        ]);
+    }
+
+    #[Route('/inscription/confirm/{id}', name: 'inscription_confirm')]
+    public function confirm(Inscription $inscription): Response {
+        // Afficher un message de confirmation
+        return $this->render('inscription/confirm.html.twig', [
+                    'inscription' => $inscription,
         ]);
     }
 }

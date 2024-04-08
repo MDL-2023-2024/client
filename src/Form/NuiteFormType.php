@@ -18,7 +18,6 @@ class NuiteFormType extends AbstractType
             ->add('dateNuitee', null, [
                 'label' => false,
                 'attr' => ['style' => 'display:none'],
-                'data' => new \DateTime(),
             ])
             ->add('categorie', EntityType::class, [
                 'class' => CategorieChambre::class,
