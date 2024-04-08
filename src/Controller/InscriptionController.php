@@ -37,12 +37,14 @@ class InscriptionController extends AbstractController {
 //            return $this->redirectToRoute('');
         }
 
-        $email = $this->getUser()->getUsername();
+        $email = $this->getUser()->getUserIdentifier();
         $numLicence = $this->getUser()->getNumlicence();
 
         // Rendre le formulaire dans la vue
         return $this->render('inscription/index.html.twig', [
-                    'form' => $form->createView(), 'numLicence' => $numLicence, 'email' => $email,
+                    'form' => $form->createView(), 
+                    'numLicence' => $numLicence, 
+                    'email' => $email,
         ]);
     }
 }
