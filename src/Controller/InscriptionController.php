@@ -20,7 +20,6 @@ class InscriptionController extends AbstractController {
         // Créer une nouvelle inscription
         $inscription = new Inscription();
         $nuite1 = new Nuite();
-        $nuite1->setDateNuitee(new \DateTime('2021-10-01'));
         $nuite2 = new Nuite();
         $nuite1->setDateNuitee(new \DateTime('2024-09-07'));
         $nuite2->setDateNuitee(new \DateTime('2024-09-08'));
@@ -46,7 +45,7 @@ class InscriptionController extends AbstractController {
             $this->addFlash('success', 'Inscription creé avec succès !');
 
             // Rediriger l'utilisateur ou afficher un message de succès
-//            return $this->redirectToRoute('');
+           return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
         }
 
         $email = $this->getUser()->getUserIdentifier();
@@ -57,6 +56,14 @@ class InscriptionController extends AbstractController {
                     'form' => $form->createView(), 
                     'numLicence' => $numLicence, 
                     'email' => $email,
+        ]);
+    }
+
+    #[Route('/inscription/confirm/{id}', name: 'inscription_confirm')]
+    public function confirm(Inscription $inscription): Response {
+        // Afficher un message de confirmation
+        return $this->render('inscription/confirm.html.twig', [
+                    'inscription' => $inscription,
         ]);
     }
 }

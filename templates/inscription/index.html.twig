@@ -28,7 +28,6 @@
 			<div class="row mt-4">
 				{% for nuite in form.nuites %}
 					<div class="col {{loop.index == 1 ? 'border-end' : 'border-start'}} border-primary border-3">
-						{{form_start(nuite)}}
 						{% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
 						<h3 class="text-center">Nuitée du
 							{{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}}</h3>
@@ -54,7 +53,6 @@
 								</div>
 							</div>
 						</div>
-						{{form_end(nuite)}}
 					</div>
 				{% endfor %}
 			</div>
