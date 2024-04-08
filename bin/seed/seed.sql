@@ -53,6 +53,7 @@ INSERT INTO theme_atelier (atelier_id, theme_id) VALUES
 (2, 1), -- Lier 'Atelier Avancé' à 'Escrime Classique'
 (2, 2); -- Lier 'Atelier Avancé' à 'Escrime Moderne'
 
+
 LOCK TABLES `compte` WRITE;
 /*!40000 ALTER TABLE `compte` DISABLE KEYS */;
 INSERT INTO `compte` VALUES (1,'lucasfox@outlook.fr','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','16360514319',1);

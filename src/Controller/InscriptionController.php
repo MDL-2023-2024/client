@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Inscription;
+use App\Entity\Nuite;
 use App\Form\InscriptionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +19,14 @@ class InscriptionController extends AbstractController {
         $entityManager = $doctrine->getManager();
         // Créer une nouvelle inscription
         $inscription = new Inscription();
+        $nuite1 = new Nuite();
+        $nuite1->setDateNuitee(new \DateTime('2021-10-01'));
+        $nuite2 = new Nuite();
+        $inscription->getNuites()->add($nuite1);
+        $inscription->getNuites()->add($nuite2);
 
         // Créer le formulaire
         $form = $this->createForm(InscriptionType::class, $inscription);
-
         // Gérer la requête
         $form->handleRequest($request);
 
