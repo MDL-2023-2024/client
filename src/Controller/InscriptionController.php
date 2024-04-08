@@ -19,10 +19,11 @@ class InscriptionController extends AbstractController {
         $entityManager = $doctrine->getManager();
         // Créer une nouvelle inscription
         $inscription = new Inscription();
-        $inscription->setDateInscription(new \DateTime());
         $nuite1 = new Nuite();
         $nuite1->setDateNuitee(new \DateTime('2021-10-01'));
         $nuite2 = new Nuite();
+        $nuite1->setDateNuitee(new \DateTime('2024-09-07'));
+        $nuite2->setDateNuitee(new \DateTime('2024-09-08'));
         $inscription->getNuites()->add($nuite1);
         $inscription->getNuites()->add($nuite2);
 
@@ -32,6 +33,7 @@ class InscriptionController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $inscription->setDateInscription(new \DateTime());
             // Ici, vous pouvez sauvegarder l'inscription dans la base de données
             // par exemple, en utilisant l'EntityManager
             $inscription->setCompte($this->getUser());
