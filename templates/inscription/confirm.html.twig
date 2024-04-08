@@ -1,1 +1,12 @@
 {% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ 'app.page.title'|trans }}
+{% endblock %}
+
+{% block body %}
+	<p>{{total}}</p>
+    {% for nuite in inscription.nuites %}
+        <p> : {{nuite.prix}} €</p>
+    {% endfor %}
+{% endblock %}

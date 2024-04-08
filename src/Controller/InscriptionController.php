@@ -15,7 +15,8 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Doctrine\Persistence\ManagerRegistry;
 
-class InscriptionController extends AbstractController {
+class InscriptionController extends AbstractController
+{
 
     #[Route('/inscription', name: 'inscription')]
     public function index(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response {
@@ -63,7 +64,7 @@ class InscriptionController extends AbstractController {
             $mailer->send($email);
 
             // Rediriger l'utilisateur ou afficher un message de succès
-           return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
+            return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
         }
 
         // Affichage du formulaire
@@ -75,10 +76,19 @@ class InscriptionController extends AbstractController {
     }
 
     #[Route('/inscription/confirm/{id}', name: 'inscription_confirm')]
-    public function confirm(Inscription $inscription): Response {
+    public function confirm(Inscription $inscription): Response
+    {
+        $total = 130;
+        foreach ($inscription->getNuites() as $nuite) {
+            $total += $nuite->getCategorie()->getTarifs()[0]->getTarifNuite();
+        }
+        foreach ($inscription->getRestaurations() as $restauration) {
+            $total += 38;
+        }
         // Afficher un message de confirmation
         return $this->render('inscription/confirm.html.twig', [
-                    'inscription' => $inscription,
+            'total' => $total,
+            'inscription' => $inscription,
         ]);
     }
 }
