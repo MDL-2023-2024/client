@@ -8,12 +8,14 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Inscription;
 use App\Entity\Atelier;
+use App\Entity\CategorieChambre;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class InscriptionType extends AbstractType {
 
-    public function buildForm(FormBuilderInterface $builder, array $options): void {
+    public function buildForm(FormBuilderInterface $builder, array $options): void 
         $builder
                 ->add('ateliers', EntityType::class, [
                     'class' => Atelier::class,
@@ -21,12 +23,11 @@ class InscriptionType extends AbstractType {
                     'multiple' => true,
                     'expanded' => true,
                 ])
-                ->add('roomType', ChoiceType::class, [
-                    'choices' => [
-                        'Single' => 'single',
-                        'Double' => 'double',
-                    ],
-                    'expanded' => true, // This makes it render as radio buttons
+                ->add('nuites', EntityType::class, [
+                    'class' => CategorieChambre::class,
+                    'choice_label' => 'libelleCategorie',
+                    'multiple' => true,
+                    'expanded' => true,
                 ])
                 ->add('enregistrer', SubmitType::class, [
                     'attr' => ['class' => 'btn-primary'],
