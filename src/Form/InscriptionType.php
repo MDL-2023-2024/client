@@ -31,10 +31,10 @@ class InscriptionType extends AbstractType
                 'allow_add' => true,
                 'entry_options' => ['label' => false],
                 'by_reference' => false,
+                'required' => false,
             ])
             ->add('restaurations' , EntityType::class, [
                 'class' => Restauration::class,
-                'choice_label' => 'libelle', // Make sure 'libelle' is a valid property with a getter in Restauration
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,

@@ -53,6 +53,11 @@ INSERT INTO theme_atelier (atelier_id, theme_id) VALUES
 (2, 1), -- Lier 'Atelier Avancé' à 'Escrime Classique'
 (2, 2); -- Lier 'Atelier Avancé' à 'Escrime Moderne'
 
+-- Insérer dans `restauration`
+INSERT INTO restauration (date_restauration, type_repas) VALUES 
+('2024-09-07 12:00:00', 'Déjeuner'),
+('2024-09-07 19:00:00', 'Dîner'),
+('2024-09-08 12:00:00', 'Déjeuner');
 
 LOCK TABLES `compte` WRITE;
 /*!40000 ALTER TABLE `compte` DISABLE KEYS */;

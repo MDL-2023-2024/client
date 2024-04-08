@@ -32,7 +32,12 @@
 			{% endfor %}
 		</div>
 	</div>
-
+	{% for nuite in form.nuites %}
+    {% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
+		{{ form_label(nuite.dateNuitee, dateString|format_datetime(pattern= 'dd MMM y', locale='fr'))}}
+		{{ form_errors(nuite.dateNuitee) }}
+		{{ form_widget(nuite.dateNuitee) }}
+	{% endfor %}
 	<h3>
 		Numéro de licence :
 		<span>

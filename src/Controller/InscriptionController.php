@@ -19,6 +19,7 @@ class InscriptionController extends AbstractController {
         $entityManager = $doctrine->getManager();
         // Créer une nouvelle inscription
         $inscription = new Inscription();
+        $inscription->setDateInscription(new \DateTime());
         $nuite1 = new Nuite();
         $nuite1->setDateNuitee(new \DateTime('2021-10-01'));
         $nuite2 = new Nuite();
@@ -35,6 +36,10 @@ class InscriptionController extends AbstractController {
             // par exemple, en utilisant l'EntityManager
             $inscription->setCompte($this->getUser());
             $entityManager->persist($inscription);
+            $nuite1->setInscription($inscription);
+            $entityManager->persist($nuite1);
+            $nuite2->setInscription($inscription);
+            $entityManager->persist($nuite2);
             $entityManager->flush();
             $this->addFlash('success', 'Inscription creé avec succès !');
 

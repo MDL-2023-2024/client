@@ -15,7 +15,10 @@ class NuiteFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateNuitee')
+            ->add('dateNuitee', null, [
+                'label' => (new \DateTime())->format('d M Y'),
+                'attr' => ['style' => 'display:none'],
+            ])
             ->add('categorie', EntityType::class, [
                 'class' => CategorieChambre::class,
                 'choice_label' => 'libelleCategorie',
@@ -27,8 +30,7 @@ class NuiteFormType extends AbstractType
                 'choice_label' => 'pnom', // Make sure 'libelle' is a valid property with a getter in Atelier
                 'multiple' => false,
                 'expanded' => true,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
