@@ -1,12 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ 'app.page.title'|trans }}
+    {{ 'Confirmation d\'Inscription' | trans }}  {# Assurez-vous que la clé de traduction est correcte #}
 {% endblock %}
 
 {% block body %}
-	<p>{{total}}</p>
+<section class="container mt-5">
+    <h1>{{ 'Confirmation de Votre Inscription' | trans }}</h1>
+    <p class="mb-4">Veuillez confirmer ou annuler votre inscription ci-dessous :</p>
+    
+    <h2>Détails de l'Inscription</h2>
+    <p>Total Estimé : <strong> €</strong></p>
+
+    <h3>Nuitées Réservées</h3>
     {% for nuite in inscription.nuites %}
-        <p> : {{nuite.prix}} €</p>
+        <p>Nuitée le {{ nuite.dateNuitee | date('d-m-Y') }} : {{ nuite.categorie.tarif | default('Non Spécifié') }} €</p>  {# Assurez-vous que 'categorie.tarif' est le chemin correct pour accéder au prix dans votre modèle #}
     {% endfor %}
+
+    <h3>Restaurations</h3>
+    {% for restauration in inscription.restaurations %}
+        <p>{{ restauration.description }} : 38 €</p>  {# Assumant un prix fixe pour la restauration, ajustez selon votre modèle de données #}
+    {% endfor %}
+
+    {# Formulaire de Confirmation #}
+    <form method="post" action="{{ path('inscription_confirm') }}">  {# Assurez-vous que 'finalise_inscription' est le nom de la route correcte pour finaliser l'inscription #}
+        <button type="submit" class="btn btn-success">Confirmer</button>
+        <a href="{{ path('inscription') }}" class="btn btn-danger">Annuler</a>  {# Changez 'inscription' au besoin pour rediriger correctement en cas d'annulation #}
+    </form>
+</section>
 {% endblock %}

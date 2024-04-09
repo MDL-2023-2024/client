@@ -15,12 +15,10 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Doctrine\Persistence\ManagerRegistry;
 
-class InscriptionController extends AbstractController
-{
+class InscriptionController extends AbstractController {
 
     #[Route('/inscription', name: 'inscription')]
-    public function index(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response {
-        $entityManager = $doctrine->getManager();
+    public function index(Request $request, ManagerRegistry $doctrine): Response {
 
         // Créer une nouvelle inscription
         $inscription = new Inscription();
@@ -37,59 +35,64 @@ class InscriptionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $inscription->setDateInscription(new \DateTime());
-            // Ici, vous pouvez sauvegarder l'inscription dans la base de données
-            // par exemple, en utilisant l'EntityManager
-            $inscription->setCompte($this->getUser());
-            $entityManager->persist($inscription);
-            $nuite1->setInscription($inscription);
-            $entityManager->persist($nuite1);
-            $nuite2->setInscription($inscription);
-            $entityManager->persist($nuite2);
-            $entityManager->flush();
-            $mail=filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-            $this->addFlash('success', 'Inscription créée avec succès !');
+            $inscription->setCompte($this->getUser()); 
+            // Sauvegarde temporaire des données dans la session
+            //$session = $request->getSession();
+            //$session->set('pending_inscription', $inscription);
 
-            // Préparation de l'email
-            $email = (new TemplatedEmail())
-                ->from(new Address('no-reply@apsio.com', 'Confirmation Inscription | Maison Des Ligues'))
-                ->to($mail)
-                ->subject('Confirmation de votre inscription')
-                ->htmlTemplate('inscription/confirmation.html.twig')
-                ->context([
-                    'user' => $this->getUser(),
-                    'inscription' => $inscription,
-                ]);
-
-            // Envoi de l'email
-            $mailer->send($email);
-
-            // Rediriger l'utilisateur ou afficher un message de succès
-            return $this->redirectToRoute('inscription_confirm', ['inscription' => $inscription]);
+            // Redirection vers la page de confirmation
+            return $this->redirectToRoute('inscription_confirm',['inscription'=>$inscription,'nuite1'=>$nuite1,'nuite2'=>$nuite2]);
         }
 
-        // Affichage du formulaire
         return $this->render('inscription/index.html.twig', [
-            'form' => $form->createView(),
-            'numLicence' => $this->getUser()->getNumLicence(),
-            'email' => $this->getUser()->getEmail(),
+                    'form' => $form->createView(),
+                    'numLicence' => $this->getUser()->getNumLicence(),
+                    'email' => $this->getUser()->getEmail(),
         ]);
     }
 
     #[Route('/inscription/confirm', name: 'inscription_confirm')]
-    public function confirm(Request $request): Response
-    {
-        $inscription = $request->get('inscription');
-        $total = 130;
-        foreach ($inscription->getNuites() as $nuite) {
-            $total += $nuite->getCategorie()->getTarifs()[0]->getTarifNuite();
+    public function confirm(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response {
+        $inscription=$request->get('inscription');
+        $nuite1=$request->get('nuite1');
+        $nuite2=$request->get('nuite2');
+                
+        if (!$inscription) {
+            $this->addFlash('error', 'Aucune inscription en attente de confirmation.');
+            return $this->redirectToRoute('inscription');
         }
-        foreach ($inscription->getRestaurations() as $restauration) {
-            $total += 38;
+        // Calculez le total ou d'autres données ici si nécessaire
+        //var_dump($inscription);
+        if ($request->isMethod('POST')) {
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($nuite1);
+            $entityManager->persist($nuite2);
+            $entityManager->persist($inscription);
+            $entityManager->flush();
+
+            // Préparation et envoi de l'email
+            $email = (new TemplatedEmail())
+                    ->from(new Address('no-reply@apsio.com', 'Confirmation Inscription | Maison Des Ligues'))
+                    ->to($this->getUser()->getEmail()) 
+                    ->subject('Confirmation de votre inscription')
+                    ->htmlTemplate('inscription/confirmation_email.html.twig')
+                    ->context([
+                'user' => $this->getUser(),
+                'inscription' => $inscription,
+            ]);
+
+            $mailer->send($email);
+
+            $this->addFlash('success', 'Inscription confirmée et e-mail envoyé avec succès.');
+
+            // Redirection après confirmation
+            return $this->redirectToRoute('acceuil');
         }
-        // Afficher un message de confirmation
+
+        // Affichage de la page de confirmation
         return $this->render('inscription/confirm.html.twig', [
-            'total' => $total,
-            'inscription' => $inscription,
+                    'inscription' => $inscription,
+                        // autres variables nécessaires pour la vue
         ]);
     }
 }
