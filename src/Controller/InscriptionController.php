@@ -64,7 +64,7 @@ class InscriptionController extends AbstractController
             $mailer->send($email);
 
             // Rediriger l'utilisateur ou afficher un message de succès
-            return $this->redirectToRoute('inscription_confirm', ['id' => $inscription->getId()]);
+            return $this->redirectToRoute('inscription_confirm', ['inscription' => $inscription]);
         }
 
         // Affichage du formulaire
@@ -75,9 +75,10 @@ class InscriptionController extends AbstractController
         ]);
     }
 
-    #[Route('/inscription/confirm/{id}', name: 'inscription_confirm')]
-    public function confirm(Inscription $inscription): Response
+    #[Route('/inscription/confirm', name: 'inscription_confirm')]
+    public function confirm(Request $request): Response
     {
+        $inscription = $request->get('inscription');
         $total = 130;
         foreach ($inscription->getNuites() as $nuite) {
             $total += $nuite->getCategorie()->getTarifs()[0]->getTarifNuite();
