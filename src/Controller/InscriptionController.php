@@ -14,11 +14,14 @@ use Symfony\Component\Mime\Email;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class InscriptionController extends AbstractController {
+class InscriptionController extends AbstractController
+{
 
     #[Route('/inscription', name: 'inscription')]
-    public function index(Request $request, ManagerRegistry $doctrine): Response {
+    public function index(Request $request, ManagerRegistry $doctrine): Response
+    {
 
         // Créer une nouvelle inscription
         $inscription = new Inscription();
@@ -30,69 +33,76 @@ class InscriptionController extends AbstractController {
         $inscription->getNuites()->add($nuite2);
 
         // Créer le formulaire
-        $form = $this->createForm(InscriptionType::class, $inscription);
+        $form = $this->createForm(InscriptionType::class, $inscription, [
+            'action' => $this->generateUrl('inscription_confirm'),
+        ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $inscription->setDateInscription(new \DateTime());
-            $inscription->setCompte($this->getUser()); 
-            // Sauvegarde temporaire des données dans la session
-            //$session = $request->getSession();
-            //$session->set('pending_inscription', $inscription);
-
-            // Redirection vers la page de confirmation
-            return $this->redirectToRoute('inscription_confirm',['inscription'=>$inscription,'nuite1'=>$nuite1,'nuite2'=>$nuite2]);
-        }
-
         return $this->render('inscription/index.html.twig', [
-                    'form' => $form->createView(),
-                    'numLicence' => $this->getUser()->getNumLicence(),
-                    'email' => $this->getUser()->getEmail(),
+            'form' => $form->createView(),
+            'numLicence' => $this->getUser()->getNumLicence(),
+            'email' => $this->getUser()->getEmail(),
         ]);
     }
 
     #[Route('/inscription/confirm', name: 'inscription_confirm')]
-    public function confirm(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response {
-        $inscription=$request->get('inscription');
-        $nuite1=$request->get('nuite1');
-        $nuite2=$request->get('nuite2');
-                
-        if (!$inscription) {
-            $this->addFlash('error', 'Aucune inscription en attente de confirmation.');
-            return $this->redirectToRoute('inscription');
-        }
-        // Calculez le total ou d'autres données ici si nécessaire
-        //var_dump($inscription);
-        if ($request->isMethod('POST')) {
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($nuite1);
-            $entityManager->persist($nuite2);
-            $entityManager->persist($inscription);
-            $entityManager->flush();
+    public function confirm(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response
+    {
+        $entityManager = $doctrine->getManager();
 
-            // Préparation et envoi de l'email
-            $email = (new TemplatedEmail())
+        // Créer une nouvelle inscription
+        $inscription = new Inscription();
+        $nuite1 = new Nuite();
+        $nuite2 = new Nuite();
+        $inscription->getNuites()->add($nuite1);
+        $inscription->getNuites()->add($nuite2);
+
+        $form = $this->createForm(InscriptionType::class, $inscription, [
+            'action' => $this->generateUrl('inscription_confirm'),
+        ]);
+        $form->handleRequest($request);
+        $test = $request->get('confirm');   
+        $email = $request->get('email');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            if ($request->get('confirm') == 'true') {
+                $inscription->setDateInscription(new \DateTime());
+                $inscription->setCompte($this->getUser());
+                $entityManager->persist($inscription);
+                $nuite1->setInscription($inscription);
+                $entityManager->persist($nuite1);
+                $nuite2->setInscription($inscription);
+                $entityManager->persist($nuite2);
+                // Sauvegarde temporaire des données dans la session
+                //$session = $request->getSession();
+                //$session->set('pending_inscription', $inscription);
+
+                $email = (new TemplatedEmail())
                     ->from(new Address('no-reply@apsio.com', 'Confirmation Inscription | Maison Des Ligues'))
-                    ->to($this->getUser()->getEmail()) 
+                    ->to($email)
                     ->subject('Confirmation de votre inscription')
                     ->htmlTemplate('inscription/confirmation_email.html.twig')
                     ->context([
-                'user' => $this->getUser(),
-                'inscription' => $inscription,
-            ]);
+                        'user' => $this->getUser(),
+                        'inscription' => $inscription,
+                    ]);
 
-            $mailer->send($email);
+                $mailer->send($email);
 
-            $this->addFlash('success', 'Inscription confirmée et e-mail envoyé avec succès.');
+                $this->addFlash('success', 'Inscription confirmée et e-mail envoyé avec succès.');
 
-            // Redirection après confirmation
-            return $this->redirectToRoute('acceuil');
+                // Redirection vers la page de confirmation
+                return $this->redirectToRoute('acceuil');
+            }
         }
 
         // Affichage de la page de confirmation
         return $this->render('inscription/confirm.html.twig', [
-                    'inscription' => $inscription,
-                        // autres variables nécessaires pour la vue
+            'form' => $form->createView(),
+            'inscription' => $inscription,
+            'email' => $email,
+            // autres variables nécessaires pour la vue
         ]);
     }
 }

@@ -34,7 +34,7 @@ class CategorieChambre
     private ?Collection $nuites;
 
     /**
-     * Les tarifs de la catégorie de chambre.
+     * Le tarif de la catégorie de chambre.
      */
     #[ORM\OneToMany(targetEntity: Proposer::class, mappedBy: 'categorie')]
     private Collection $tarifs;
