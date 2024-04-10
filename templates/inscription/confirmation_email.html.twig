@@ -1,0 +1,51 @@
+{# templates/inscription/confirmation.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation d'Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Confirmation d'Inscription</h1>
+        </div>
+        <p>Bonjour,</p>
+        <p>Merci de vous être inscrit à notre événement. Votre inscription a été enregistrée avec les détails suivants :</p>
+        <ul>
+            <li>Numéro de licence : {{ user.numLicence }}</li>
+            <li>Email : {{ user.email }}</li>
+            <li>Date d'inscription : {{ inscription.dateInscription|date('d/m/Y') }}</li>
+        </ul>
+        <p>Si vous avez des questions ou si vous avez besoin de modifier votre inscription, n'hésitez pas à nous contacter.</p>
+        <div class="footer">
+            <p>Cordialement,</p>
+            <p>L'équipe de la Maison Des Ligues</p>
+        </div>
+    </div>
+</body>
+</html>

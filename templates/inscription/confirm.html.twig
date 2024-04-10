@@ -1,12 +1,107 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ 'app.page.title'|trans }}
+    {{ 'Confirmation d\'Inscription' | trans }}  {# Assurez-vous que la clé de traduction est correcte #}
 {% endblock %}
 
 {% block body %}
-	<p>{{total}}</p>
-    {% for nuite in inscription.nuites %}
-        <p> : {{nuite.prix}} €</p>
+<section class="container pt-5 bg-light pb-3">
+    {{ form_start(form) }}
+    <div class="d-none">
+        <input type="email" id="email" name="email" value="{{email}}" required>
+        <div class="row mt-4">
+            {% for nuite in form.nuites %}
+                <div class="col {{loop.index == 1 ? 'border-end' : 'border-start'}} border-primary border-3">
+                    {% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
+                    <h3 class="text-center">Nuitée du
+                        {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}}</h3>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="text-center">{{ form_label(nuite.hotel) }}</h4>
+                            <div class="row align-items-center justify-content-center">
+                                {% for hotel in nuite.hotel %}
+                                    <div class="col">
+                                        {{ form_widget(hotel) }}
+                                        {{ form_label(hotel) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <h4 class="text-center">{{ form_label(nuite.categorie) }}</h4>
+                            <div class="row">
+                                {% for categorie in nuite.categorie %}
+                                    <div class="col">
+                                        {{ form_widget(categorie) }}
+                                        {{ form_label(categorie) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row mt-5 mb-4">
+            <div class="col">
+                <h3 class="text-center">{{ form_label(form.ateliers) }}</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        {% for atelier in form.ateliers %}
+                            {% if loop.index % 3 == 1 %}
+                                {{ form_widget(atelier) }}
+                                {{ form_label(atelier) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                        {% for atelier in form.ateliers %}
+                            {% if loop.index % 3 == 2 %}
+                                {{ form_widget(atelier) }}
+                                {{ form_label(atelier) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-4">
+                        {% for atelier in form.ateliers %}
+                            {% if loop.index % 3 == 0 %}
+                                {{ form_widget(atelier) }}
+                                {{ form_label(atelier) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h3 class="text-center">{{ form_label(form.restaurations) }}</h3>
+                <div class="row">
+                    {% for restauation in form.restaurations %}
+                        <div class="col">
+                            {{ form_widget(restauation) }}
+                            {{ form_label(restauation) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {{ form_widget(form.enregistrer) }}
+    </div>
+    <h1>{{ 'Confirmation de Votre Inscription' | trans }}</h1>
+    <p class="mb-4">Veuillez confirmer ou annuler votre inscription ci-dessous :</p>
+    
+    <h2>Détails de l'Inscription</h2>
+    <p>Total Estimé : <strong> €</strong></p>
+
+    <h3>Nuitées Réservées</h3>
+    {% for nuite in form.nuites %}
+        {% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
+        <p>Nuitée le {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}} : {{ nuite.categorie.tarif.tarifNuite | default('Non Spécifié') }} €</p>
     {% endfor %}
+
+    <h3>Restaurations</h3>
+    {% for restauration in inscription.restaurations %}
+        <p>{{ restauration }} : 38 €</p> 
+    {% endfor %}
+        <button type="submit" class="btn btn-success" id="confirm" name="confirm" value="true">Confirmer</button>
+        <a href="{{ path('inscription') }}" class="btn btn-danger">Annuler</a> 
+        {{ form_end(form) }}
+</section>
 {% endblock %}
