@@ -88,18 +88,27 @@
     <p class="mb-4">Veuillez confirmer ou annuler votre inscription ci-dessous :</p>
     
     <h2>Détails de l'Inscription</h2>
-    <p>Total Estimé : <strong> {{ 'proposer1' }}€</strong></p>
+    <p>Total Estimé : <strong> {{ total }} €</strong></p>
 
     <h3>Nuitées Réservées</h3>
     {% for nuite in form.nuites %}
         {% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
-        <p>Nuitée le {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}} : {{ nuite.categorie.tarif.tarifNuite | default('Non Spécifié') }} €</p>
+        {% if nuite.hotel.vars.value == "" or nuite.categorie.vars.value == "" %}
+                <p>Nuitée le {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}} : Non réserver </p>
+        {% else %}
+            {% for tarif in tarifs %}
+                {% if tarif.hotel.id == nuite.hotel.vars.value and tarif.categorie.id == nuite.categorie.vars.value %}
+                    <p>Nuitée le {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}} : {{ tarif.tarifNuite }} €</p>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     {% endfor %}
-
-    <h3>Restaurations</h3>
-    {% for restauration in inscription.restaurations %}
-        <p>{{ restauration }} : 38 €</p> 
-    {% endfor %}
+    {% if inscription.restaurations|length > 0 %}
+        <h3>Restaurations</h3>
+        {% for restauration in inscription.restaurations %}
+            <p>{{ restauration }} : 38 €</p> 
+        {% endfor %}
+    {% endif %}
         <button type="submit" class="btn btn-success" id="confirm" name="confirm" value="true">Confirmer</button>
         <a href="{{ path('inscription') }}" class="btn btn-danger">Annuler</a> 
         {{ form_end(form) }}

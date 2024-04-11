@@ -17,6 +17,8 @@ use Symfony\Component\Mime\Address;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use function PHPUnit\Framework\isNull;
+
 class InscriptionController extends AbstractController {
 
     #[Route('/inscription', name: 'inscription')]
@@ -46,6 +48,7 @@ class InscriptionController extends AbstractController {
 
     #[Route('/inscription/confirm', name: 'inscription_confirm')]
     public function confirm(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response {
+        $total = 130;
         $entityManager = $doctrine->getManager();
 
         // Créer une nouvelle inscription
@@ -55,8 +58,6 @@ class InscriptionController extends AbstractController {
         $inscription->getNuites()->add($nuite1);
         $inscription->getNuites()->add($nuite2);
 
-        $proposer1 = $doctrine->getRepository(Proposer::class)->findByHotelAndCategorie($nuite1->getHotel(), $nuite1->getCategorie());
-        $proposer2 = $doctrine->getRepository(Proposer::class)->findByHotelAndCategorie($nuite2->getHotel(), $nuite2->getCategorie());
         $form = $this->createForm(InscriptionType::class, $inscription, [
             'action' => $this->generateUrl('inscription_confirm'),
         ]);
@@ -64,6 +65,14 @@ class InscriptionController extends AbstractController {
         $email = $request->get('email');
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tarifs = $doctrine->getRepository(Proposer::class)->findAll();
+            foreach ($inscription->getNuites() as $nuite) {
+                $proposer = $doctrine->getRepository(Proposer::class)->findByHotelAndCategorie($nuite->getHotel(), $nuite->getCategorie());
+                $total += ($proposer == null) ? 0 : $proposer->getTarifNuite();
+            }
+            foreach ($inscription->getRestaurations() as $restauration) {
+                $total += 38;
+            }
 
             if ($request->get('confirm') == 'true') {
                 $inscription->setDateInscription(new \DateTime());
@@ -98,8 +107,8 @@ class InscriptionController extends AbstractController {
                     'form' => $form->createView(),
                     'inscription' => $inscription,
                     'email' => $email,
-                    '$proposer1' => $proposer1,
-                    '$proposer2' => $proposer2,
+                    'tarifs' => $tarifs,
+                    'total' => $total,
                         // autres variables nécessaires pour la vue
         ]);
     }

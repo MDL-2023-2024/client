@@ -31,7 +31,7 @@ class ProposerRepository extends ServiceEntityRepository {
                         ->setParameter('idHotel', $idHotel)
                         ->setParameter('idCategorie', $idCategorie)
                         ->getQuery()
-                        ->getResult();
+                        ->getOneOrNullResult();
     }
 
 //    /**

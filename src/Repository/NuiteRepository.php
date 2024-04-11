@@ -22,18 +22,6 @@ class NuiteRepository extends ServiceEntityRepository {
         parent::__construct($registry, Nuite::class);
     }
 
-    public function findByHotelAndCategorie($idHotel, $idCategorie) {
-        return $this->createQueryBuilder('n') // 'n' représente une entité Nuit
-                        ->innerJoin('n.hotel', 'h')
-                        ->innerJoin('n.categorie', 'cat')
-                        ->where('h.id = :idHotel')
-                        ->andWhere('cat.id = :idCategorie')
-                        ->setParameter('idHotel', $idHotel)
-                        ->setParameter('idCategorie', $idCategorie)
-                        ->getQuery()
-                        ->getResult();
-    }
-
 //    /**
 //     * @return Nuite[] Returns an array of Nuite objects
 //     */
