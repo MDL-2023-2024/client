@@ -61,6 +61,12 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $prenom = null;
+
     /**
      * Crée une nouvelle instance de compte.
      */
@@ -292,7 +298,11 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getNom(): string
     {
-        return (new \App\Service\ApiService)->getNomById($this->numlicence);
+        if (count($this->roles) > 1) {
+            return $this->nom;}
+        else {
+            return (new \App\Service\ApiService)->getNomById($this->numlicence);
+        }
     }
 
     /**
@@ -302,6 +312,24 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPrenom(): string
     {
-        return (new \App\Service\ApiService)->getPrenomById($this->numlicence);
+        if (count($this->roles) > 1) {
+            return $this->prenom;}
+        else {
+            return (new \App\Service\ApiService)->getPrenomById($this->numlicence);
+        }
+    }
+
+    public function setNom(?string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function setPrenom(?string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
     }
 }
