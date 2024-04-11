@@ -10,7 +10,9 @@ use App\Entity\Inscription;
 use App\Entity\Atelier;
 use App\Entity\Nuite;
 use App\Entity\Restauration;
+use PharIo\Manifest\Email;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormTypeInterface;
 
@@ -20,6 +22,10 @@ class InscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('email', EmailType::class, [
+                'label' => 'Email de l\'envoie de la confirmation',
+                'mapped' => false,
+            ])
             ->add('ateliers', EntityType::class, [
                 'class' => Atelier::class,
                 'choice_label' => 'libelle', // Make sure 'libelle' is a valid property with a getter in Atelier

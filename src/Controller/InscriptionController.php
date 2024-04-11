@@ -40,11 +40,10 @@ class InscriptionController extends AbstractController {
             'action' => $this->generateUrl('inscription_confirm'),
         ]);
         $form->handleRequest($request);
-
+        $form->get('email')->setData($this->getUser()->getEmail());
         return $this->render('inscription/index.html.twig', [
                     'form' => $form->createView(),
                     'numLicence' => $this->getUser()->getNumLicence(),
-                    'email' => $this->getUser()->getEmail(),
         ]);
     }
 
