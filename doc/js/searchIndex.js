@@ -1191,6 +1191,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/App-Repository-AtelierRepository.html#method___construct"
         },                {
+            "fqsen": "\\App\\Repository\\AtelierRepository\u003A\u003AfindWithVacations\u0028\u0029",
+            "name": "findWithVacations",
+            "summary": "R\u00E9cup\u00E8re\u0020tous\u0020les\u0020ateliers\u0020qui\u0020ont\u0020au\u0020moins\u0020une\u0020vacation.",
+            "url": "classes/App-Repository-AtelierRepository.html#method_findWithVacations"
+        },                {
             "fqsen": "\\App\\Repository\\CategorieChambreRepository",
             "name": "CategorieChambreRepository",
             "summary": "Repository\u0020des\u0020cat\u00E9gories\u0020de\u0020chambre.",
