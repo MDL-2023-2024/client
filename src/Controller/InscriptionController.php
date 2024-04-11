@@ -16,11 +16,14 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 use function PHPUnit\Framework\isNull;
 
+#[IsGranted("ROLE_INSCRIT")]
 class InscriptionController extends AbstractController {
 
+    #[IsGranted("ROLE_USER")]
     #[Route('/inscription', name: 'inscription')]
     public function index(Request $request, ManagerRegistry $doctrine): Response {
 
