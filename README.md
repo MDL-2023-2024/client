@@ -2,7 +2,9 @@
 
 ![Maison des ligues](https://i.imgur.com/Toba9cv.png)
 
-Projet Personnel Encadré de deuxième année de BTS SIO
+Projet Personnel Encadré de deuxième année de BTS SIO.
+
+Il comprend le client web ainsi que l'api intégrer.
 
 ## Installation
 ### Prérequis 
