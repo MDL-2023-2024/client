@@ -23,7 +23,6 @@ use function PHPUnit\Framework\isNull;
 #[IsGranted("ROLE_INSCRIT")]
 class InscriptionController extends AbstractController {
 
-    #[IsGranted("ROLE_USER")]
     #[Route('/inscription', name: 'inscription')]
     public function index(Request $request, ManagerRegistry $doctrine): Response {
 
