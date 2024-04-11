@@ -61,8 +61,8 @@ INSERT INTO restauration (date_restauration, type_repas) VALUES
 
 LOCK TABLES `compte` WRITE;
 /*!40000 ALTER TABLE `compte` DISABLE KEYS */;
-INSERT INTO `compte` VALUES (1,'lucasfox@outlook.fr','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','16360514319',1);
-INSERT INTO `compte` VALUES (2,'dembelematis@gmail.com','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','1636',1);
+INSERT INTO `compte` VALUES (1,'lucasfox@outlook.fr','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','26098765188',1);
+INSERT INTO `compte` VALUES (2,'dembelematis@gmail.com','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','22098765188',1);
 /*!40000 ALTER TABLE `compte` ENABLE KEYS */;
 -- mdp btssio2024
 UNLOCK TABLES;
