@@ -63,7 +63,7 @@ class InscriptionController extends AbstractController {
             'action' => $this->generateUrl('inscription_confirm'),
         ]);
         $form->handleRequest($request);
-        $email = $request->get('email');
+        $email = $form->get('email')->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tarifs = $doctrine->getRepository(Proposer::class)->findAll();
