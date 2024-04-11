@@ -25,12 +25,14 @@ class InscriptionType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email de l\'envoie de la confirmation',
                 'mapped' => false,
+                'required' => true,
             ])
             ->add('ateliers', EntityType::class, [
                 'class' => Atelier::class,
                 'choice_label' => 'libelle', // Make sure 'libelle' is a valid property with a getter in Atelier
                 'multiple' => true,
                 'expanded' => true,
+                
             ])
             ->add('nuites', CollectionType::class, [
                 'entry_type' => NuiteFormType::class,

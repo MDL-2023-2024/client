@@ -62,24 +62,21 @@
 						<div class="col-md-4">
 							{% for atelier in form.ateliers %}
 								{% if loop.index % 3 == 1 %}
-									{{ form_widget(atelier) }}
-									{{ form_label(atelier) }}
+									{{ form_row(atelier) }}
 								{% endif %}
 							{% endfor %}
 						</div>
 						<div class="col-md-4">
 							{% for atelier in form.ateliers %}
 								{% if loop.index % 3 == 2 %}
-									{{ form_widget(atelier) }}
-									{{ form_label(atelier) }}
+									{{ form_row(atelier) }}
 								{% endif %}
 							{% endfor %}
 						</div>
 						<div class="col-md-4">
 							{% for atelier in form.ateliers %}
 								{% if loop.index % 3 == 0 %}
-									{{ form_widget(atelier) }}
-									{{ form_label(atelier) }}
+									{{ form_row(atelier) }}
 								{% endif %}
 							{% endfor %}
 						</div>

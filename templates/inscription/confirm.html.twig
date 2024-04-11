@@ -8,6 +8,9 @@
 <section class="container pt-5 bg-light pb-3 text-center">
     {{ form_start(form) }}
     <div class="d-none">
+            <div class="col-6">
+					{{form_row(form.email)}}
+				</div>
         <div class="row mt-4 justify-content-center">
             {% for nuite in form.nuites %}
                 <div class="col-6 {{loop.index == 1 ? 'border-end' : 'border-start'}} border-primary border-3">
@@ -64,9 +67,7 @@
     
     <h2>Détails de l'Inscription</h2>
     <p>Total Estimé : <strong> {{ total }} €</strong></p>
-            <div class="col-6">
-					{{form_row(form.email)}}
-				</div>
+    <p>Email d'envoie de confirmation : {{ form.email.vars.value }}</p>
     <h3>Nuitées Réservées</h3>
     {% for nuite in form.nuites %}
         {% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
