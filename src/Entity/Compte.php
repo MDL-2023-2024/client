@@ -319,17 +319,29 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
-    public function setNom(?string $nom): static
-    {
-        $this->nom = $nom;
+    // /**
+    //  * Modifie le nom du licencié.
+    //  * 
+    //  * @param string $nom Le nouveau nom du licencié.
+    //  * @return Compte Ce compte.
+    //  */
+    // public function setNom(?string $nom): static
+    // {
+    //     $this->nom = $nom;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function setPrenom(?string $prenom): static
-    {
-        $this->prenom = $prenom;
+    // /**
+    //  * Modifie le prénom du licencié.
+    //  * 
+    //  * @param string $prenom Le nouveau prénom du licencié.
+    //  * @return Compte Ce compte.
+    //  */
+    // public function setPrenom(?string $prenom): static
+    // {
+    //     $this->prenom = $prenom;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }
