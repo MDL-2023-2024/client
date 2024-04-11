@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Inscription;
 use App\Entity\Nuite;
+use App\Entity\Proposer;
 use App\Form\InscriptionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +17,10 @@ use Symfony\Component\Mime\Address;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class InscriptionController extends AbstractController
-{
+class InscriptionController extends AbstractController {
 
     #[Route('/inscription', name: 'inscription')]
-    public function index(Request $request, ManagerRegistry $doctrine): Response
-    {
+    public function index(Request $request, ManagerRegistry $doctrine): Response {
 
         // Créer une nouvelle inscription
         $inscription = new Inscription();
@@ -39,15 +38,14 @@ class InscriptionController extends AbstractController
         $form->handleRequest($request);
 
         return $this->render('inscription/index.html.twig', [
-            'form' => $form->createView(),
-            'numLicence' => $this->getUser()->getNumLicence(),
-            'email' => $this->getUser()->getEmail(),
+                    'form' => $form->createView(),
+                    'numLicence' => $this->getUser()->getNumLicence(),
+                    'email' => $this->getUser()->getEmail(),
         ]);
     }
 
     #[Route('/inscription/confirm', name: 'inscription_confirm')]
-    public function confirm(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response
-    {
+    public function confirm(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response {
         $entityManager = $doctrine->getManager();
 
         // Créer une nouvelle inscription
@@ -57,15 +55,16 @@ class InscriptionController extends AbstractController
         $inscription->getNuites()->add($nuite1);
         $inscription->getNuites()->add($nuite2);
 
+        $proposer1 = $doctrine->getRepository(Proposer::class)->findByHotelAndCategorie($nuite1->getHotel(), $nuite1->getCategorie());
+        $proposer2 = $doctrine->getRepository(Proposer::class)->findByHotelAndCategorie($nuite2->getHotel(), $nuite2->getCategorie());
         $form = $this->createForm(InscriptionType::class, $inscription, [
             'action' => $this->generateUrl('inscription_confirm'),
         ]);
         $form->handleRequest($request);
-        $test = $request->get('confirm');   
         $email = $request->get('email');
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             if ($request->get('confirm') == 'true') {
                 $inscription->setDateInscription(new \DateTime());
                 $inscription->setCompte($this->getUser());
@@ -74,19 +73,16 @@ class InscriptionController extends AbstractController
                 $entityManager->persist($nuite1);
                 $nuite2->setInscription($inscription);
                 $entityManager->persist($nuite2);
-                // Sauvegarde temporaire des données dans la session
-                //$session = $request->getSession();
-                //$session->set('pending_inscription', $inscription);
 
                 $email = (new TemplatedEmail())
-                    ->from(new Address('no-reply@apsio.com', 'Confirmation Inscription | Maison Des Ligues'))
-                    ->to($email)
-                    ->subject('Confirmation de votre inscription')
-                    ->htmlTemplate('inscription/confirmation_email.html.twig')
-                    ->context([
-                        'user' => $this->getUser(),
-                        'inscription' => $inscription,
-                    ]);
+                        ->from(new Address('no-reply@apsio.com', 'Confirmation Inscription | Maison Des Ligues'))
+                        ->to($email)
+                        ->subject('Confirmation de votre inscription')
+                        ->htmlTemplate('inscription/confirmation_email.html.twig')
+                        ->context([
+                    'user' => $this->getUser(),
+                    'inscription' => $inscription,
+                ]);
 
                 $mailer->send($email);
 
@@ -99,10 +95,12 @@ class InscriptionController extends AbstractController
 
         // Affichage de la page de confirmation
         return $this->render('inscription/confirm.html.twig', [
-            'form' => $form->createView(),
-            'inscription' => $inscription,
-            'email' => $email,
-            // autres variables nécessaires pour la vue
+                    'form' => $form->createView(),
+                    'inscription' => $inscription,
+                    'email' => $email,
+                    '$proposer1' => $proposer1,
+                    '$proposer2' => $proposer2,
+                        // autres variables nécessaires pour la vue
         ]);
     }
 }
