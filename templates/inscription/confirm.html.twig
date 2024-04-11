@@ -5,20 +5,19 @@
 {% endblock %}
 
 {% block body %}
-<section class="container pt-5 bg-light pb-3">
+<section class="container pt-5 bg-light pb-3 text-center">
     {{ form_start(form) }}
     <div class="d-none">
         <input type="email" id="email" name="email" value="{{email}}" required>
-        <div class="row mt-4">
+        <div class="row mt-4 justify-content-center">
             {% for nuite in form.nuites %}
-                <div class="col {{loop.index == 1 ? 'border-end' : 'border-start'}} border-primary border-3">
+                <div class="col-6 {{loop.index == 1 ? 'border-end' : 'border-start'}} border-primary border-3">
                     {% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
-                    <h3 class="text-center">Nuitée du
-                        {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}}</h3>
+                    <h3>Nuitée du {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}}</h3>
                     <div class="row">
                         <div class="col">
-                            <h4 class="text-center">{{ form_label(nuite.hotel) }}</h4>
-                            <div class="row align-items-center justify-content-center">
+                            <h4>{{ form_label(nuite.hotel) }}</h4>
+                            <div class="row justify-content-center">
                                 {% for hotel in nuite.hotel %}
                                     <div class="col">
                                         {{ form_widget(hotel) }}
@@ -26,7 +25,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <h4 class="text-center">{{ form_label(nuite.categorie) }}</h4>
+                            <h4>{{ form_label(nuite.categorie) }}</h4>
                             <div class="row">
                                 {% for categorie in nuite.categorie %}
                                     <div class="col">
@@ -40,43 +39,20 @@
                 </div>
             {% endfor %}
         </div>
-        <div class="row mt-5 mb-4">
-            <div class="col">
-                <h3 class="text-center">{{ form_label(form.ateliers) }}</h3>
-                <div class="row">
-                    <div class="col-md-4">
-                        {% for atelier in form.ateliers %}
-                            {% if loop.index % 3 == 1 %}
-                                {{ form_widget(atelier) }}
-                                {{ form_label(atelier) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="col-md-4">
-                        {% for atelier in form.ateliers %}
-                            {% if loop.index % 3 == 2 %}
-                                {{ form_widget(atelier) }}
-                                {{ form_label(atelier) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                    <div class="col-md-4">
-                        {% for atelier in form.ateliers %}
-                            {% if loop.index % 3 == 0 %}
-                                {{ form_widget(atelier) }}
-                                {{ form_label(atelier) }}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
+        <div class="row mt-5 mb-4 justify-content-center">
+            <div class="col-md-4">
+                {% for atelier in form.ateliers %}
+                    {{ form_widget(atelier) }}
+                    {{ form_label(atelier) }}
+                {% endfor %}
             </div>
             <div class="col">
-                <h3 class="text-center">{{ form_label(form.restaurations) }}</h3>
+                <h3>{{ form_label(form.restaurations) }}</h3>
                 <div class="row">
-                    {% for restauation in form.restaurations %}
+                    {% for restauration in form.restaurations %}
                         <div class="col">
-                            {{ form_widget(restauation) }}
-                            {{ form_label(restauation) }}
+                            {{ form_widget(restauration) }}
+                            {{ form_label(restauration) }}
                         </div>
                     {% endfor %}
                 </div>
@@ -94,7 +70,7 @@
     {% for nuite in form.nuites %}
         {% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
         {% if nuite.hotel.vars.value == "" or nuite.categorie.vars.value == "" %}
-                <p>Nuitée le {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}} : Non réserver </p>
+            <p>Nuitée le {{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}} : Non réservée </p>
         {% else %}
             {% for tarif in tarifs %}
                 {% if tarif.hotel.id == nuite.hotel.vars.value and tarif.categorie.id == nuite.categorie.vars.value %}
@@ -109,8 +85,8 @@
             <p>{{ restauration }} : 38 €</p> 
         {% endfor %}
     {% endif %}
-        <button type="submit" class="btn btn-success" id="confirm" name="confirm" value="true">Confirmer</button>
-        <a href="{{ path('inscription') }}" class="btn btn-danger">Annuler</a> 
-        {{ form_end(form) }}
+    <button type="submit" class="btn btn-success" id="confirm" name="confirm" value="true">Confirmer</button>
+    <a href="{{ path('inscription') }}" class="btn btn-danger">Annuler</a> 
+    {{ form_end(form) }}
 </section>
 {% endblock %}
