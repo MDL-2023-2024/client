@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Compte;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
+use App\Service\ApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,7 +46,7 @@ class RegistrationController extends AbstractController
      * @return Response La page d'inscription si erreur ou la page d'accueil si succès.
      */
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(ApiService $apiService, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Compte();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -54,22 +55,20 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             //Fetch user with licencies number doctrine
-            $licence = $form->get('numlicence')->getData();
-            $userExist = $entityManager->getRepository(Compte::class)->findOneBy(['numlicence' => $licence]);
+            $userApi = $apiService->getLicencieBy($form->get('identifiant')->getData());
+            if (!$userApi) {
+                //flash error message 
+                $this->addFlash('error', 'Donnée invalide');
+                return $this->redirectToRoute('app_register');
+            }
+            $userExist = $entityManager->getRepository(Compte::class)->findOneBy(['numlicence' => $userApi['numLicence']]);
             if ($userExist) {
                 return $this->redirectToRoute('app_login');
             }
 
-            // Requête l'api afin de vérifier le N° de licence
-            $url = "http://".$_SERVER['SERVER_NAME']."/api/licencies?page=1&numLicence=".$licence;
-            // Recupere la reponse json 
-            $resultat = json_decode(file_get_contents($url), true);
-
-            if ($resultat['hydra:totalItems'] == 0 || $resultat['hydra:totalItems'] > 1) {
-                //flash error message 
-                $this->addFlash('error', 'Numéro de licence invalide');
-                return $this->redirectToRoute('acceuil');
-            }
+            // Remplissage de l'utilisateur
+            $user->setEmail($userApi['mail']);
+            $user->setNumlicence($userApi['numLicence']);
 
             // encode the plain password
             $user->setPassword(

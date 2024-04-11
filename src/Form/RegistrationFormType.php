@@ -26,7 +26,14 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('identifiant', TextType::class, [
+                'label' => 'Email ou numéro de licence',
+                'mapped' => false, // this is not a property of the User class
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Entrez votre mail ou votre numéro de licence...',
+                ],
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'options' => [
@@ -55,15 +62,7 @@ class RegistrationFormType extends AbstractType
                 // Instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-            ])
-            ->add('numlicence', TextType::class, [
-                'label' => 'N° de licence',
-                'required' => true,
-                'attr' => [
-                    'placeholder' => 'Entrez votre numéro de licence...',
-                ],
-            ])
-        ;
+            ]);
     }
 
     /**
