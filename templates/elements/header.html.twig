@@ -27,7 +27,7 @@
 				<div class="d-flex align-self-center">
 					{% if app.user %}
 						<div class="col m-auto">
-							<span class="me-2">{{ app.user.userIdentifier }}</span>
+							<span class="me-2">{{ app.user.getNom()|upper}} {{  app.user.getPrenom() }}</span>
 						</div>
 						<div class="col">
 							<a class="nav-link ms-1" aria-current="page" href="{{ path('app_logout') }}">
