@@ -18,8 +18,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-use function PHPUnit\Framework\isNull;
-
 #[IsGranted("ROLE_INSCRIT")]
 class InscriptionController extends AbstractController {
 
@@ -64,6 +62,21 @@ class InscriptionController extends AbstractController {
         ]);
         $form->handleRequest($request);
         $email = $form->get('email')->getData();
+
+         // Verifie qu'au moin 1 atelier est présent
+        if (count($inscription->getAteliers()) == 0) {
+            $this->addFlash('error', 'Vous devez sélectionner au moins un atelier.');
+        }
+        foreach ($inscription->getNuites() as $nuite) {
+            if ($nuite->getHotel() == null && $nuite->getCategorie() != null || $nuite->getHotel() != null && $nuite->getCategorie() == null){
+                $this->addFlash('error', 'Vous devez sélectionner un hôtel et une catégorie pour chaque nuitée.');
+            }
+        }
+        
+        // compte le nombre d'erreur dans flash
+        if (isset($request->getSession()->getFlashBag()->peekAll()['error']) > 0) {
+            return $this->redirectToRoute('inscription');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tarifs = $doctrine->getRepository(Proposer::class)->findAll();

@@ -2,15 +2,21 @@
 
 {% block title %}Hello InscriptionController!
 {% endblock %}
-
+{% set error_flashes = app.flashes('error') %}
 {% block body %}
 	<section class="container pt-5 bg-light pb-3">
-		{% for flash in app.flashes('error') %}
-			<div class="alert alert-danger w-100">{{ flash }}</div>
-		{% endfor %}
-		{% for flash in app.flashes('success') %}
-			<div class="alert alert-success w-100">{{ flash }}</div>
-		{% endfor %}
+		<div id="notif-info">
+            {% for flash in app.flashes('success') %}
+                <div class="alert alert-success w-100">{{ flash }}</div>
+            {% endfor %}
+            {% if error_flashes|length > 0 %}
+                <div class="alert alert-danger mt-3">
+                    {% for error in error_flashes %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
 		<div class="row align-items-start">
 			<div class="row">
 				{{ form_start(form) }}
