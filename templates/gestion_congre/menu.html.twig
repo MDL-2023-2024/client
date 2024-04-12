@@ -1,6 +1,6 @@
 {% block menu %}
 	<div class="row">
-		<input type="radio" id="{{id}}" name="menu">
+		<input type="radio" id="{{id}}" name="menu" {{ (selected is defined) ? 'checked' : '' }}>
 		<label for="{{id}}">{{name}}</label>
 	</div>
 {% endblock %}
