@@ -61,8 +61,8 @@ Note: Avoir accées au serveur 10.10.2.143
 2. se connecter à http://mdl.ap.prod
 
 ## Accéder en tant qu'administrateur :
-Login : dembelematis@gmail.com | Mot de passe : btssio2024
-Login : luriusfox@outlook.fr | Mot de passe : btssio2024
+*Login : dembelematis@gmail.com | Mot de passe : btssio2024
+*Login : luriusfox@outlook.fr | Mot de passe : btssio2024
 
 
 ## Composants
