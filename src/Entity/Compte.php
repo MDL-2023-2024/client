@@ -280,4 +280,29 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
+            public function __toString(){
+        return $this->getEmail();
+    }
+
+    /**
+     * Retourne le nom du licencié.
+     * 
+     * @return string Le nom du licencié.
+     */
+    public function getNom(): string
+    {
+        return (new \App\Service\ApiService)->getNomById($this->numlicence);
+    }
+
+    /**
+     * Retourne le prénom du licencié.
+     * 
+     * @return string Le prénom du licencié.
+     */
+    public function getPrenom(): string
+    {
+        return (new \App\Service\ApiService)->getPrenomById($this->numlicence);
+    }
+
 }

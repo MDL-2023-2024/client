@@ -146,4 +146,14 @@ class Restauration
 
         return $this;
     }
+
+    /**
+     * Retourne une représentation textuelle de la restauration.
+     *
+     * @return string Une représentation textuelle de la restauration.
+     */
+    public function __toString(): string
+    {
+        return "{$this->typeRepas} du {$this->dateRestauration->format('d/m/Y')}";
+    }
 }

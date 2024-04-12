@@ -16,10 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Nuite[]    findAll()
  * @method Nuite[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class NuiteRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
+class NuiteRepository extends ServiceEntityRepository {
+
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Nuite::class);
     }
 
@@ -37,7 +36,6 @@ class NuiteRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
 //    public function findOneBySomeField($value): ?Nuite
 //    {
 //        return $this->createQueryBuilder('n')

@@ -53,10 +53,16 @@ INSERT INTO theme_atelier (atelier_id, theme_id) VALUES
 (2, 1), -- Lier 'Atelier Avancé' à 'Escrime Classique'
 (2, 2); -- Lier 'Atelier Avancé' à 'Escrime Moderne'
 
+-- Insérer dans `restauration`
+INSERT INTO restauration (date_restauration, type_repas) VALUES 
+('2024-09-07 12:00:00', 'Déjeuner'),
+('2024-09-07 19:00:00', 'Dîner'),
+('2024-09-08 12:00:00', 'Déjeuner');
+
 LOCK TABLES `compte` WRITE;
 /*!40000 ALTER TABLE `compte` DISABLE KEYS */;
-INSERT INTO `compte` VALUES (1,'lucasfox@outlook.fr','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','16360514319',1);
-INSERT INTO `compte` VALUES (2,'dembelematis@gmail.fr','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','1636',1);
+INSERT INTO `compte` VALUES (1,'lucasfox@outlook.fr','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','26098765188',1, 'Bruel', 'Lucas');
+INSERT INTO `compte` VALUES (2,'dembelematis@gmail.com','[\"ROLE_ADMIN\"]','$2y$13$E2DGrmfbFj4GDbu12pGlzuVxgbpgiIL5kjTPZOGQR.SR3uhH5nQiy','22098765188',1, 'Dembele', 'Matis');
 /*!40000 ALTER TABLE `compte` ENABLE KEYS */;
 -- mdp btssio2024
 UNLOCK TABLES;

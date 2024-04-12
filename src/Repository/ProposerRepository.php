@@ -16,11 +16,22 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Proposer[]    findAll()
  * @method Proposer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProposerRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
+class ProposerRepository extends ServiceEntityRepository {
+
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Proposer::class);
+    }
+
+    public function findByHotelAndCategorie($idHotel, $idCategorie) {
+        return $this->createQueryBuilder('p')
+                        ->innerJoin('p.hotel', 'h')
+                        ->innerJoin('p.categorie', 'cat')
+                        ->where('h.id = :idHotel')
+                        ->andWhere('cat.id = :idCategorie')
+                        ->setParameter('idHotel', $idHotel)
+                        ->setParameter('idCategorie', $idCategorie)
+                        ->getQuery()
+                        ->getOneOrNullResult();
     }
 
 //    /**
@@ -37,7 +48,6 @@ class ProposerRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
 //    public function findOneBySomeField($value): ?Proposer
 //    {
 //        return $this->createQueryBuilder('p')

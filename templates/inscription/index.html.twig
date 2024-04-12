@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello InscriptionController!
+{% endblock %}
+{% set error_flashes = app.flashes('error') %}
+{% block body %}
+	<section class="container pt-5 bg-light pb-3">
+		<div id="notif-info">
+            {% for flash in app.flashes('success') %}
+                <div class="alert alert-success w-100">{{ flash }}</div>
+            {% endfor %}
+            {% if error_flashes|length > 0 %}
+                <div class="alert alert-danger mt-3">
+                    {% for error in error_flashes %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+		<div class="row align-items-start">
+			<div class="row">
+				{{ form_start(form) }}
+				<h3>
+					Numéro de licence :
+					<span>
+						{{numLicence}}
+					</span>
+				</h3>
+				<div class="col-6">
+					{{form_row(form.email)}}
+				</div>
+			</div>
+			<div class="row mt-4">
+				{% for nuite in form.nuites %}
+					<div class="col {{loop.index == 1 ? 'border-end' : 'border-start'}} border-primary border-3">
+						{% set dateString = nuite.dateNuitee.vars.value.date.day ~ '-' ~ nuite.dateNuitee.vars.value.date.month ~ '-' ~ nuite.dateNuitee.vars.value.date.year %}
+						<h3 class="text-center">Nuitée du
+							{{dateString|format_datetime(pattern= 'dd MMM y', locale='fr')}}</h3>
+						<div class="row">
+							<div class="col">
+								<h4 class="text-center">{{ form_label(nuite.hotel) }}</h4>
+								<div class="row align-items-center justify-content-center">
+									{% for hotel in nuite.hotel %}
+										<div class="col">
+											{{ form_widget(hotel) }}
+											{{ form_label(hotel) }}
+										</div>
+									{% endfor %}
+								</div>
+								<h4 class="text-center">{{ form_label(nuite.categorie) }}</h4>
+								<div class="row">
+									{% for categorie in nuite.categorie %}
+										<div class="col">
+											{{ form_widget(categorie) }}
+											{{ form_label(categorie) }}
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="row mt-5 mb-4">
+				<div class="col">
+					<h3 class="text-center">{{ form_label(form.ateliers) }}</h3>
+					<div class="row">
+						<div class="col-md-4">
+							{% for atelier in form.ateliers %}
+								{% if loop.index % 3 == 1 %}
+									{{ form_row(atelier) }}
+								{% endif %}
+							{% endfor %}
+						</div>
+						<div class="col-md-4">
+							{% for atelier in form.ateliers %}
+								{% if loop.index % 3 == 2 %}
+									{{ form_row(atelier) }}
+								{% endif %}
+							{% endfor %}
+						</div>
+						<div class="col-md-4">
+							{% for atelier in form.ateliers %}
+								{% if loop.index % 3 == 0 %}
+									{{ form_row(atelier) }}
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<h3 class="text-center">{{ form_label(form.restaurations) }}</h3>
+					<div class="row">
+						{% for restauation in form.restaurations %}
+							<div class="col">
+								{{ form_widget(restauation) }}
+								{{ form_label(restauation) }}
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</section>
+{% endblock %}
