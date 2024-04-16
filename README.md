@@ -64,7 +64,7 @@ Note: Avoir accées au serveur 10.10.2.143
 *Login : dembelematis@gmail.com | Mot de passe : btssio2024
 *Login : lucasfox@outlook.fr | Mot de passe : btssio2024
 
-Différent numero de licence avec leur email afin de tester l'inscription : 
+Différent numéro de licence avec leur email afin de tester l'inscription : 
 
 - 16550101583 non.lobortis.quis@Duis.org
 - 16750810076 magna.Nam@tellusnon.ca
