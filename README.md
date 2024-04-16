@@ -62,8 +62,14 @@ Note: Avoir accées au serveur 10.10.2.143
 
 ## Accéder en tant qu'administrateur :
 *Login : dembelematis@gmail.com | Mot de passe : btssio2024
-*Login : luriusfox@outlook.fr | Mot de passe : btssio2024
+*Login : lucasfox@outlook.fr | Mot de passe : btssio2024
 
+Différent numero de licence avec leur email afin de tester l'inscription : 
+
+- 16550101583 non.lobortis.quis@Duis.org
+- 16750810076 magna.Nam@tellusnon.ca
+- 16971127111 Nunc.lectus.pede@dolorsit.ca
+- 16800505337 hendrerit.neque.In@magnisdis.net
 
 ## Composants
 * [Bundle Symfony 5.4](https://symfony.com) - Framework PHP
