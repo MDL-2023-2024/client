@@ -53,6 +53,16 @@ class Inscription
     #[ORM\JoinColumn(nullable: false)]
     private ?Compte $compte = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $emailConfirmation = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateModification = null;
+    
+    #[ORM\ManyToOne(inversedBy: 'inscriptions')]
+    #[ORM\JoinColumn(nullable: false, options: ["default" => 'EP'])]
+    private ?StatusInscription $status = null;
+
     /**
      * Crée une nouvelle instance d'inscription.
      */
@@ -235,6 +245,42 @@ class Inscription
     public function setCompte(?Compte $compte): static
     {
         $this->compte = $compte;
+
+        return $this;
+    }
+
+    public function getEmailConfirmation(): ?string
+    {
+        return $this->emailConfirmation;
+    }
+
+    public function setEmailConfirmation(string $emailConfirmation): static
+    {
+        $this->emailConfirmation = $emailConfirmation;
+
+        return $this;
+    }
+
+    public function getDateModification(): ?\DateTimeInterface
+    {
+        return $this->dateModification;
+    }
+
+    public function setDateModification(\DateTimeInterface $dateModification): static
+    {
+        $this->dateModification = $dateModification;
+
+        return $this;
+    }
+
+    public function getStatus(): ?StatusInscription
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?StatusInscription $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
