@@ -1,28 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container flex-grow-1">
-        <div class="row justify-content-center align-items-center h-100">
-            <div class="col">
-                <div class="card" style="height: 40vh;">
-                    <div class="card-body">
-                        <div class="row h-100">
-                            <div class="col">
-                                <a href="{{path('gestion_add')}}" class="btn border border-black border-2 rounded btn-lg w-100 h-100 d-flex flex-column justify-content-end align-items-center">
-                                    <i class="fas fa-book fa-6x m-auto"></i>
-                                    <p>Ajouter un atelier, thème ou vacation</p>
-                                </a>
-                            </div>
-                            <div class="col">
-                                <a href="{{path('gestion_edit_vacation')}}" class="btn border border-black border-2 rounded btn-lg w-100 h-100 d-flex flex-column justify-content-end align-items-center">
-                                    <i class="fas fa-edit fa-6x m-auto"></i>
-                                    <p>Editer les vacation</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container flex-grow-1">
+		<div class="row justify-content-center align-items-center h-100">
+			<div class="col">
+				<div class="card" style="height: 40vh;">
+					<div class="card-body">
+						<div class="row h-100">
+							<div class="col">
+								<a href="{{path('gestion_add')}}" class="btn border border-black border-2 rounded btn-lg w-100 h-100 d-flex flex-column justify-content-end align-items-center">
+									<i class="fas fa-book fa-6x m-auto"></i>
+									<p>Ajouter un atelier, thème ou vacation</p>
+								</a>
+							</div>
+							<div class="col">
+								<a href="{{path('gestion_edit_vacation')}}" class="btn border border-black border-2 rounded btn-lg w-100 h-100 d-flex flex-column justify-content-end align-items-center">
+									<i class="fas fa-edit fa-6x m-auto"></i>
+									<p>Editer les vacation</p>
+								</a>
+							</div>
+							{% if is_granted('ROLE_ADMIN') %}
+								<div class="col">
+									<a href="{{path('gestion_select_inscription')}}" class="btn border border-black border-2 rounded btn-lg w-100 h-100 d-flex flex-column justify-content-end align-items-center">
+										<i class="fas fa-edit fa-6x m-auto"></i>
+										<p>Editer le status d'une inscription</p>
+									</a>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

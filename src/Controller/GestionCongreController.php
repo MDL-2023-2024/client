@@ -6,6 +6,7 @@ use App\Entity\Atelier;
 use App\Entity\Theme;
 use App\Entity\Vacation;
 use App\Form\AteliersFormType;
+use App\Form\SelectInscriptionFormType;
 use App\Form\ThemeFormType;
 use App\Form\VacationFormType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -171,5 +172,23 @@ class GestionCongreController extends AbstractController
             }
         }
         return $errors;
+    }
+
+    #[Route('/inscription/select', name: 'select_inscription')]
+    public function selectInscription(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $form = $this->createForm(SelectInscriptionFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $compteNumLicence = $form->get('compte')->getData();
+            $inscriptionId = $form->get('inscription')->getData();
+            $this->addFlash('success', 'Inscription sélectionnée avec succès !');
+            return $this->redirectToRoute('gestion_select_inscription');
+        }
+
+        return $this->render('gestion_congre/inscription/selectInscription.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

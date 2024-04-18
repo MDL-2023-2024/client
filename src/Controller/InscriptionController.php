@@ -38,7 +38,6 @@ class InscriptionController extends AbstractController {
             'action' => $this->generateUrl('inscription_confirm'),
         ]);
         $form->handleRequest($request);
-        $form->get('email')->setData($this->getUser()->getEmail());
         return $this->render('inscription/index.html.twig', [
                     'form' => $form->createView(),
                     'numLicence' => $this->getUser()->getNumLicence(),
@@ -61,7 +60,6 @@ class InscriptionController extends AbstractController {
             'action' => $this->generateUrl('inscription_confirm'),
         ]);
         $form->handleRequest($request);
-        $email = $form->get('email')->getData();
 
          // Verifie qu'au moin 1 atelier est présent
         if (count($inscription->getAteliers()) == 0) {
@@ -91,6 +89,7 @@ class InscriptionController extends AbstractController {
             if ($request->get('confirm') == 'true') {
                 $inscription->setDateInscription(new \DateTime());
                 $inscription->setCompte($this->getUser());
+                $inscription->setDateModification(new \DateTime());
                 $entityManager->persist($inscription);
                 $nuite1->setInscription($inscription);
                 $entityManager->persist($nuite1);

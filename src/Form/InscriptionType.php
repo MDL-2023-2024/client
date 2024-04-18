@@ -22,9 +22,8 @@ class InscriptionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
+            ->add('emailConfirmation', EmailType::class, [
                 'label' => 'Email de l\'envoie de la confirmation',
-                'mapped' => false,
                 'required' => true,
             ])
             ->add('ateliers', EntityType::class, [
